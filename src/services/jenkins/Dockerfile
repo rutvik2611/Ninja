@@ -1,9 +1,6 @@
 # Start from the Jenkins LTS image
 FROM jenkins/jenkins:lts
 
-# Skip the initial setup wizard
-ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
-
 # Switch to root user to install additional software
 USER root
 
@@ -31,7 +28,14 @@ RUN apt-get update && \
 
 # Create the 'docker' group and add the 'jenkins' user to it
 RUN groupadd docker && \
-    usermod -aG docker jenkins
+    usermod -aG docker jenkins  # Removed the backslash, as it's the end of the command
+
+# Adjust permissions for Jenkins home
+RUN chown -R jenkins:jenkins /var/jenkins_home
+
+# [Optional] If the jenkins user needs passwordless sudo, uncomment the following line
+RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Switch back to the jenkins user
 USER jenkins
+

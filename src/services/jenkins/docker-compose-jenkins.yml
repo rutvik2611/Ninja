@@ -7,7 +7,7 @@ services:
       - "50000:50000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../docker-volumes/jenkins-volume:/var/jenkins_home
+      - ../../docker-volumes/jenkins-volume:/var/jenkins_home  # Your specific path can be different
     environment:
       - JENKINS_ADMIN_ID=admin
       - JENKINS_ADMIN_PASSWORD=admin_password

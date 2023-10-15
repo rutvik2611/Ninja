@@ -1,5 +1,6 @@
 pipeline {
   agent any
+
   stages {
     stage('Checkout Code from GIT') {
       steps {
@@ -7,36 +8,38 @@ pipeline {
       }
     }
 
-    stage('Prepare and Run cutcut service') {
+    stage('Validate Environment and Build Docker Image') {
       steps {
         script {
-          // Navigate to the correct service directory
-          dir('src/services/cutcut') {
+          // Navigate to the directory containing the Dockerfile
+          dir('src/services/cutcut') { // Adjust if your path differs
+            // Check if the 'docker' command is available
+            sh 'docker --version || { echo "Docker is not available, install Docker"; exit 1; }'
 
-            // Print all files in the 'cutcut' service directory to verify their presence
-            sh 'echo "Verifying presence of necessary files:"'
-            sh 'ls -l' // This will list all the files in the current directory
+            // Check the current user (expected to be 'jenkins' or whichever user has Docker permissions)
+            sh 'whoami || { echo "Cannot determine the current user"; exit 1; }'
 
-            // Build the Docker image from the Dockerfile in the current directory
-            // and tag it as 'cutcut'. It assumes the context is the current directory ('.')
-            sh 'echo "Building Docker image..."'
-            sh 'sudo docker build -t cutcut .' // You may replace 'cutcut' with any tag you prefer
+            // List the contents of the current directory to verify the Dockerfile is present
+            sh 'ls -l || { echo "Cannot list the files in the current directory"; exit 1; }'
 
-            // After building, run the created image using a Docker run command.
-            // This is a basic example; you may need to adjust it as per your application's requirements.
-            sh 'echo "Running Docker image..."'
-            sh 'docker run -d --name cutcut_instance -p desired_port:internal_port cutcut' // Replace 'desired_port' and 'internal_port' with your actual ports
+            // Check if the current user is part of the 'docker' group
+            sh 'groups || { echo "Cannot determine the groups the current user belongs to"; exit 1; }'
+
+            // Attempt to build the Docker image
+            // 'cutcut' is the tag for your image
+            sh 'docker build -t cutcut . || { echo "Docker image build failed"; exit 1; }'
           }
         }
       }
     }
 
-    // Additional stages can be added here.
-
+    // Add additional stages as per your process
+    // For example, you might have a test stage, deploy stage, etc.
   }
+
   post {
     always {
-      // Actions to perform after the pipeline has finished.
+      // Actions to perform after the pipeline has finished its execution.
       echo 'Pipeline has finished executing.'
     }
   }
