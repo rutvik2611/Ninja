@@ -7,41 +7,34 @@ pipeline {
       }
     }
 
-    // Removed 'Setup Python Environment' and 'Execute Python Script' stages as per your request.
-    stage('List Workspace') {
+    stage('List Workspace Contents') { // Diagnostic stage to list workspace contents
       steps {
         script {
-          // List everything in the workspace for diagnostic purposes
-          sh 'ls -R'  // Or you can use 'ls -alR' for a more detailed list including hidden files
+          sh 'echo "Listing Workspace contents:"'
+          sh 'ls -R' // This will list all files recursively in the workspace directory
         }
       }
     }
 
-    // ... [other stages as before]
+    stage('Build and Run cutcut service') {
+      steps {
+        script {
+          dir('services/cutcut') {
+            // Check if Docker is available
+            sh 'docker --version' // Just to confirm that Docker is available
+            sh 'ls -al'
+            sh 'find .'
 
-  }
+            // Build the Docker image within the Jenkins pipeline and tag it
+            def cutcutImage = docker.build('cutcut', '-f Dockerfile .')  // Ensure this command points to your actual Dockerfile location and context
 
-stage('Build and Run cutcut service') {
-  steps {
-    script {
-      dir('services/cutcut') {
-        // Check if Docker is available
-        sh 'docker --version' // Just to confirm that Docker is available
-        sh 'ls -al'
-        sh 'find .'
-
-        // Build the Docker image within the Jenkins pipeline and tag it
-        def cutcutImage = docker.build('cutcut', '-f Dockerfile .')  // Ensure this command points to your actual Dockerfile location and context
-
-        // Now, run your docker-compose up command. This assumes your docker-compose file is set up correctly.
-        // The Jenkins workspace path is prepended to your compose file's services' build context and should be considered in the paths within your compose file.
-        sh 'docker-compose -f cutcut-docker-compose.yml up -d'
+            // Now, run your docker-compose up command. This assumes your docker-compose file is set up correctly.
+            // The Jenkins workspace path is prepended to your compose file's services' build context and should be considered in the paths within your compose file.
+            sh 'docker-compose -f cutcut-docker-compose.yml up -d'
+          }
+        }
       }
     }
-  }
-}
-
-
 
     // Additional stages can be added here.
 
