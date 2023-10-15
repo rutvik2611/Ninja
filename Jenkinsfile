@@ -7,30 +7,25 @@ pipeline {
       }
     }
 
-    stage('List Workspace Contents') {
+    stage('Prepare and Run cutcut service') {
       steps {
         script {
-          sh 'echo "Listing Workspace contents:"'
-          sh 'ls -R' // Lists all files recursively in the workspace directory
-        }
-      }
-    }
+          // Navigate to the correct service directory
+          dir('src/services/cutcut') {
 
-    stage('Build and Run cutcut service') {
-      steps {
-        script {
-          dir('src/services/cutcut') { // Updated to the correct path
-            // Check if Docker is available
-            sh 'docker --version' // Just to confirm that Docker is available
-            sh 'ls -al'
-            sh 'find .'
+            // Print all files in the 'cutcut' service directory to verify their presence
+            sh 'echo "Verifying presence of necessary files:"'
+            sh 'ls -l' // This will list all the files in the current directory
 
-            // Build the Docker image within the Jenkins pipeline and tag it
-            def cutcutImage = docker.build('cutcut', '-f Dockerfile .')  // Ensure this command points to your actual Dockerfile location and context
+            // Build the Docker image from the Dockerfile in the current directory
+            // and tag it as 'cutcut'. It assumes the context is the current directory ('.')
+            sh 'echo "Building Docker image..."'
+            sh 'docker build -t cutcut .' // You may replace 'cutcut' with any tag you prefer
 
-            // Now, run your docker-compose up command. This assumes your docker-compose file is set up correctly.
-            // The Jenkins workspace path is prepended to your compose file's services' build context and should be considered in the paths within your compose file.
-            sh 'docker-compose -f cutcut-docker-compose.yml up -d'
+            // After building, run the created image using a Docker run command.
+            // This is a basic example; you may need to adjust it as per your application's requirements.
+            sh 'echo "Running Docker image..."'
+            sh 'docker run -d --name cutcut_instance -p desired_port:internal_port cutcut' // Replace 'desired_port' and 'internal_port' with your actual ports
           }
         }
       }
