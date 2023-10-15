@@ -1,1 +1,2 @@
 # Ninja
+cheking build
