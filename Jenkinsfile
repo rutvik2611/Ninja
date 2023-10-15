@@ -7,11 +7,11 @@ pipeline {
       }
     }
 
-    stage('List Workspace Contents') { // Diagnostic stage to list workspace contents
+    stage('List Workspace Contents') {
       steps {
         script {
           sh 'echo "Listing Workspace contents:"'
-          sh 'ls -R' // This will list all files recursively in the workspace directory
+          sh 'ls -R' // Lists all files recursively in the workspace directory
         }
       }
     }
@@ -19,7 +19,7 @@ pipeline {
     stage('Build and Run cutcut service') {
       steps {
         script {
-          dir('services/cutcut') {
+          dir('src/services/cutcut') { // Updated to the correct path
             // Check if Docker is available
             sh 'docker --version' // Just to confirm that Docker is available
             sh 'ls -al'
