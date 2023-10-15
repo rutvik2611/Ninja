@@ -20,7 +20,7 @@ pipeline {
             // Build the Docker image from the Dockerfile in the current directory
             // and tag it as 'cutcut'. It assumes the context is the current directory ('.')
             sh 'echo "Building Docker image..."'
-            sh 'docker build -t cutcut .' // You may replace 'cutcut' with any tag you prefer
+            sh 'sudo docker build -t cutcut .' // You may replace 'cutcut' with any tag you prefer
 
             // After building, run the created image using a Docker run command.
             // This is a basic example; you may need to adjust it as per your application's requirements.
