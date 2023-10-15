@@ -10,22 +10,23 @@ pipeline {
     // Removed 'Setup Python Environment' and 'Execute Python Script' stages as per your request.
 
     stage('Build and Run cutcut service') {
-      steps {
-        script {
-          // Change the directory to the location of the Dockerfile for the cutcut service.
-          dir('services/cutcut') {
-            // Build the Docker image, tagging it as 'cutcut'.
-            // 'docker.build' is provided by the Docker Pipeline plugin.
-            def cutcutImage = docker.build('cutcut')
+  steps {
+    script {
+      dir('services/cutcut') {
+        // Check if Docker is available
+        sh 'docker --version' // This line is for debugging. If this command fails, then Docker is not installed on this agent.
 
-            // Run the cutcut service. This will use the 'docker-compose' command,
-            // assuming your docker-compose file is set up to run the service with the newly built image.
-            // The 'sh' step is used to execute the shell command.
-            sh 'docker-compose -f cutcut-docker-compose.yml up -d'
-          }
-        }
+        // If the above command succeeds but the next steps fail, it is likely an issue with the Docker Pipeline plugin.
+        def cutcutImage = docker.build('cutcut')
+
+        // After building, you can run your image. Adjust the docker run command according to your setup.
+        // This is a basic example, and you may need additional parameters based on your docker-compose file.
+        sh 'docker-compose -f cutcut-docker-compose.yml up -d'
       }
     }
+  }
+}
+
 
     // Additional stages can be added here.
 
