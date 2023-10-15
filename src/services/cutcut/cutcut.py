@@ -33,7 +33,7 @@ output_videos = []
 end_times = [sum(durations[:i]) for i in range(1, len(durations) + 1)]
 
 # Set the output directory
-output_directory = "/app/output_directory"  # You can change this path
+output_directory = "/app/input/output_directory"  # You can change this path
 
 # Cut the video based on the end times
 for i, end_time in enumerate(end_times):
