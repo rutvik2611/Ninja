@@ -15,6 +15,8 @@ stage('Build and Run cutcut service') {
       dir('services/cutcut') {
         // Check if Docker is available
         sh 'docker --version' // Just to confirm that Docker is available
+        sh 'ls -al'
+        sh 'find .'
 
         // Build the Docker image within the Jenkins pipeline and tag it
         def cutcutImage = docker.build('cutcut', '-f Dockerfile .')  // Ensure this command points to your actual Dockerfile location and context
