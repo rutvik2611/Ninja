@@ -6,29 +6,33 @@ pipeline {
         git(url: 'https://github.com/rutvik2611/Ninja', branch: 'working')
       }
     }
-    stage('Setup Python Environment') {
+
+    // Removed 'Setup Python Environment' and 'Execute Python Script' stages as per your request.
+
+    stage('Build and Run cutcut service') {
       steps {
         script {
-          // This is an example and may need to be adjusted based on your specific setup.
-          // Setup Python environment, for example, using 'sh', 'bat', or 'py' steps
-          sh 'python -m ensurepip --upgrade'
+          // Change the directory to the location of the Dockerfile for the cutcut service.
+          dir('services/cutcut') {
+            // Build the Docker image, tagging it as 'cutcut'.
+            // 'docker.build' is provided by the Docker Pipeline plugin.
+            def cutcutImage = docker.build('cutcut')
+
+            // Run the cutcut service. This will use the 'docker-compose' command,
+            // assuming your docker-compose file is set up to run the service with the newly built image.
+            // The 'sh' step is used to execute the shell command.
+            sh 'docker-compose -f cutcut-docker-compose.yml up -d'
+          }
         }
       }
     }
-    stage('Execute Python Script') {
-      steps {
-        script {
-          // Assuming your script is in the root of your repository and named 'deploy_script.py'.
-          // Adjust the directory and filename as necessary.
-          sh 'python main.py'
-        }
-      }
-    }
-    // Additional stages like testing, deploying, etc., can follow here.
+
+    // Additional stages can be added here.
+
   }
   post {
     always {
-      // Post-execution actions like cleaning up, sending notifications, etc.
+      // Actions to perform after the pipeline has finished.
       echo 'Pipeline has finished executing.'
     }
   }
