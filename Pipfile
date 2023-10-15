@@ -1,0 +1,35 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+altgraph = "==0.17"
+astroid = "==2.4.1"
+beautifulsoup4 = "==4.9.0"
+bs4 = "==0.0.1"
+certifi = "==2020.4.5.1"
+chardet = "==3.0.4"
+colorama = "==0.4.3"
+idna = "==2.9"
+isort = "==4.3.21"
+lazy-object-proxy = "==1.4.3"
+lxml = "==4.5.0"
+macholib = "==1.14"
+mccabe = "==0.6.1"
+modulegraph = "==0.18"
+pylint = "==2.5.2"
+pyperclip = "==1.8.0"
+pyqt5 = "==5.14.2"
+pyqt5-sip = "==12.7.2"
+requests = "==2.23.0"
+six = "==1.14.0"
+soupsieve = "==2.0"
+toml = "==0.10.1"
+urllib3 = "==1.25.9"
+wrapt = "==1.12.1"
+
+[requires]
+python_version = "3.8"
