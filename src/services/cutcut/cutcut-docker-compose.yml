@@ -1,0 +1,9 @@
+version: '3'
+services:
+  video-cutter:
+    image: cutcut:latest
+    environment:
+      - DURATIONS=14.76,0.89,0.83,0.84,0.88,0.84
+    volumes:
+      - ./host/input_directory:/app/input  # Map the input directory from the host
+      - ./host/output_directory:/app/output_directory  # Map the output directory from the host
