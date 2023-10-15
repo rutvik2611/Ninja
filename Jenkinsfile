@@ -20,7 +20,7 @@ pipeline {
         script {
           // Assuming your script is in the root of your repository and named 'deploy_script.py'.
           // Adjust the directory and filename as necessary.
-          sh 'python deploy_script.py'
+          sh 'python main.py'
         }
       }
     }
