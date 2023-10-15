@@ -11,7 +11,7 @@ def print_file_structure(root_directory, indent=""):
     items = os.listdir(root_directory)
     num_items = len(items)
 
-    ignore_list = ['.idea', 'node_modules','jenkins-volume','__pycache__']
+    ignore_list = ['.idea', 'node_modules','jenkins-volume','__pycache__','Pipfile.lock']
 
     for index, item in enumerate(items):
         item_path = os.path.join(root_directory, item)
