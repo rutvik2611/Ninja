@@ -9,23 +9,24 @@ pipeline {
 
     // Removed 'Setup Python Environment' and 'Execute Python Script' stages as per your request.
 
-    stage('Build and Run cutcut service') {
+stage('Build and Run cutcut service') {
   steps {
     script {
       dir('services/cutcut') {
         // Check if Docker is available
-        sh 'docker --version' // This line is for debugging. If this command fails, then Docker is not installed on this agent.
+        sh 'docker --version' // Just to confirm that Docker is available
 
-        // If the above command succeeds but the next steps fail, it is likely an issue with the Docker Pipeline plugin.
-        def cutcutImage = docker.build('cutcut')
+        // Build the Docker image within the Jenkins pipeline and tag it
+        def cutcutImage = docker.build('cutcut', '-f Dockerfile .')  // Ensure this command points to your actual Dockerfile location and context
 
-        // After building, you can run your image. Adjust the docker run command according to your setup.
-        // This is a basic example, and you may need additional parameters based on your docker-compose file.
+        // Now, run your docker-compose up command. This assumes your docker-compose file is set up correctly.
+        // The Jenkins workspace path is prepended to your compose file's services' build context and should be considered in the paths within your compose file.
         sh 'docker-compose -f cutcut-docker-compose.yml up -d'
       }
     }
   }
 }
+
 
 
     // Additional stages can be added here.
