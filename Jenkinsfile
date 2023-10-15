@@ -8,6 +8,18 @@ pipeline {
     }
 
     // Removed 'Setup Python Environment' and 'Execute Python Script' stages as per your request.
+    stage('List Workspace') {
+      steps {
+        script {
+          // List everything in the workspace for diagnostic purposes
+          sh 'ls -R'  // Or you can use 'ls -alR' for a more detailed list including hidden files
+        }
+      }
+    }
+
+    // ... [other stages as before]
+
+  }
 
 stage('Build and Run cutcut service') {
   steps {
