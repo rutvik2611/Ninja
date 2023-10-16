@@ -1,5 +1,8 @@
 import os
 import subprocess
+import yaml
+
+from src.helper.helper import deploy_service, build_and_deploy_jenkins
 
 
 def print_file_structure(root_directory, indent=""):
@@ -12,7 +15,7 @@ def print_file_structure(root_directory, indent=""):
     items = os.listdir(root_directory)
     num_items = len(items)
 
-    ignore_list = ['.idea', 'node_modules','jenkins-volume','__pycache__','Pipfile.lock']
+    ignore_list = ['.idea', 'node_modules','jenkins-volume','__pycache__','Pipfile.lock','output_directory']
 
     for index, item in enumerate(items):
         item_path = os.path.join(root_directory, item)
@@ -23,6 +26,47 @@ def print_file_structure(root_directory, indent=""):
             if os.path.isdir(item_path):
                 next_indent = indent + ("    " if is_last else "│   ")
                 print_file_structure(item_path, next_indent)
+def print_file_structure_and_content(root_directory, indent=""):
+    """
+    Recursively prints the file structure starting from the given directory and
+    displays the contents of the files.
+
+    :param root_directory: The directory to start printing the file structure from.
+    :param indent: A string used for indentation to represent the directory hierarchy.
+    """
+    items = os.listdir(root_directory)
+    num_items = len(items)
+
+    ignore_list = ['.idea', 'node_modules', 'jenkins-volume', '__pycache__', 'Pipfile.lock', 'output_directory']
+
+    for index, item in enumerate(items):
+        item_path = os.path.join(root_directory, item)
+        is_last = index == num_items - 1
+
+        # Check if the current item should be ignored
+        if item in ignore_list:
+            continue
+
+        # Print the current item's name
+        print(f"{indent}{'└─' if is_last else '├─'} {item}")
+
+        if os.path.isdir(item_path):
+            # If the current item is a directory, recursively call the function
+            next_indent = indent + ("    " if is_last else "│   ")
+            print_file_structure_and_content(item_path, next_indent)
+        else:
+            # If the current item is a file, display its contents
+            try:
+                with open(item_path, 'r') as file_content:
+                    print(f"{indent}  {'└─' if is_last else '├─'} [Contents of {item}]:")
+                    # Reading the content of the file
+                    contents = file_content.read()
+                    # Printing the content of the file with additional indentation
+                    for line in contents.split('\n'):
+                        print(f"{indent}  {'    ' if is_last else '│   '}{line}")
+            except Exception as e:
+                # If the file cannot be read, display an error message
+                print(f"{indent}  {'└─' if is_last else '├─'} [Error reading {item}]: {e}")
 def list_available_services():
     services_directory = os.path.join(os.getcwd(), 'services')
     services = [service for service in os.listdir(services_directory) if os.path.isdir(os.path.join(services_directory, service))]
@@ -46,53 +90,16 @@ def list_available_services():
         else:
             print("Please enter a valid number.")
 
-def deploy_service(service_name):
-    service_path = os.path.join(os.getcwd(), 'services', service_name)
-    docker_compose_files = [f for f in os.listdir(service_path) if f.endswith(".yml") or f.endswith(".yaml")]
 
-    if len(docker_compose_files) == 1:
-        docker_compose_file = docker_compose_files[0]
-        docker_compose_path = os.path.join(service_path, docker_compose_file)
-        print(f"Deploying {docker_compose_file}...")
-        subprocess.run(["docker-compose", "-f", docker_compose_path, "up", "-d"])
-        print(f"{docker_compose_file} has been deployed.")
-    elif docker_compose_files:
-        print(f"Found multiple Docker Compose files in '{service_name}' folder. Please select a specific file or enter 'all' to deploy all files.")
-        for index, file in enumerate(docker_compose_files):
-            print(f"{index + 1}. {file}")
-
-        file_choice = input("Select a Docker Compose file to deploy (enter the file number) or type 'all' to deploy all files or 'exit' to return to the main menu: ")
-        if file_choice == 'exit':
-            return
-
-        if file_choice.lower() == 'all':
-            for docker_compose_file in docker_compose_files:
-                docker_compose_path = os.path.join(service_path, docker_compose_file)
-                print(f"Deploying {docker_compose_file}...")
-                subprocess.run(["docker-compose", "-f", docker_compose_path, "up", "-d"])
-                print(f"{docker_compose_file} has been deployed.")
-        elif file_choice.isdigit():
-            file_choice = int(file_choice)
-            if 1 <= file_choice <= len(docker_compose_files):
-                docker_compose_file = docker_compose_files[file_choice - 1]
-                docker_compose_path = os.path.join(service_path, docker_compose_file)
-                print(f"Deploying {docker_compose_file}...")
-                subprocess.run(["docker-compose", "-f", docker_compose_path, "up", "-d"])
-                print(f"{docker_compose_file} has been deployed.")
-            else:
-                print("Invalid file number.")
-        else:
-            print("Please enter a valid number or 'all'.")
-    else:
-        print(f"No Docker Compose or YAML files found in '{service_name}' folder.")
 
 
 if __name__ == '__main__':
     while True:
-        print("Select an option:")
+        print("\nSelect an option:")
         print("1. Print File Structure")
         print("2. List Available Services")
-        print("3. Exit")
+        print("3. Build Jenkins")
+        print("4. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -101,12 +108,17 @@ if __name__ == '__main__':
             if os.path.exists(directory_path):
                 print(f"File structure starting from: {directory_path}")
                 print_file_structure(directory_path)
+
             else:
                 print(f"The directory '{directory_path}' does not exist.")
         elif choice == '2':
             list_available_services()
         elif choice == '3':
+            build_and_deploy_jenkins()
+        elif choice == '4':
+            # directory_path = os.getcwd()
+            # print_file_structure_and_content(directory_path)
             print("Exiting the program.")
             break
         else:
-            print("Invalid choice. Please select a valid option (1, 2, or 3).")
+            print("Invalid choice. Please select a valid option.")
