@@ -27,28 +27,55 @@ fi
 
 # Function to delete existing GPG keys
 delete_existing_keys() {
-    echo "Existing GPG keys:"
-    gpg --list-secret-keys --keyid-format LONG
+    local existing_keys
+    existing_keys=$(gpg --list-secret-keys --keyid-format LONG)
 
-    read -p "Do you want to delete all existing GPG keys? (yes/no): " delete_keys
-    if [[ "$delete_keys" == "yes" ]]; then
-        gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | awk -F'/' '{print $2}' | while read -r keyid; do
+    if [[ -z "$existing_keys" ]]; then
+        echo "No existing GPG keys found."
+        return
+    fi
+
+    echo "Existing GPG keys:"
+    echo "$existing_keys"
+
+    echo "$existing_keys" | grep sec | while read -r line; do
+        local keyid=$(echo $line | awk '{print $2}' | awk -F'/' '{print $2}')
+        echo "Key ID: $keyid"
+        read -p "Do you want to delete this key? (yes/no): " delete_key
+        if [[ "$delete_key" == "yes" ]]; then
             echo "Deleting key: $keyid"
             gpg --batch --yes --delete-secret-key "$keyid"
             gpg --batch --yes --delete-key "$keyid"
-        done
-        echo "All existing GPG keys have been deleted."
-    else
-        echo "Skipping deletion of existing GPG keys."
-    fi
+            echo "Key deleted."
+        else
+            echo "Skipping key: $keyid"
+        fi
+    done
 }
 
 # Offer to delete existing keys
 delete_existing_keys
 
+# Prompt for key details
+read -p "Enter your full name: " full_name
+read -p "Enter your email: " email
+read -p "Enter a comment for your key (optional): " comment
+
 # Generate a new GPG key
 echo "Generating a new GPG key with default size 4096 and no expiration..."
-gpg --full-generate-key --default-key 4096 --default-new-key-algo rsa4096 --gen-key --pinentry-mode loopback
+gpg --batch --gen-key <<EOF
+    Key-Type: RSA
+    Key-Length: 4096
+    Subkey-Type: RSA
+    Subkey-Length: 4096
+    Name-Real: $full_name
+    Name-Email: $email
+    Name-Comment: $comment
+    Expire-Date: 0
+    %commit
+EOF
+
+echo "GPG key generation complete."
 
 # Extract the GPG key ID
 echo "Extracting the GPG key ID..."
@@ -86,5 +113,5 @@ read -p "Do you want to undo all settings and disable GPG signing for Git? (yes/
 if [[ "$undo_settings" == "yes" ]]; then
     git config --global --unset user.signingkey
     git config --global commit.gpgsign false
-    echo "All Git GPG settings have been reset. GPG signing is no longer required.."
+    echo "All Git GPG settings have been reset. GPG signing is no"
 fi
