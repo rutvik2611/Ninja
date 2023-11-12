@@ -1,13 +1,27 @@
 version: '3'
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    image: my-custom-jenkins  # updated to use the local image
     ports:
       - "8080:8080"
-      - "50000:50000"  # Add this line to map port 50000
+      - "50000:50000"
     volumes:
-      - ../../docker-volumes/jenkins-volume:/var/jenkins_home
+      # For Linux environments, you might need to connect the Docker socket directly.
+      # Uncomment the next line if you're deploying on Linux, but ensure the Docker socket permissions are correctly configured.
+      #- /var/run/docker.sock:/var/run/docker.sock
+
+      # For both Windows and Linux, specify the volume for Jenkins data.
+      - ../../docker-volumes/jenkins-volume:/var/jenkins_home  # Your specific path can be different
     environment:
       - JENKINS_ADMIN_ID=admin
       - JENKINS_ADMIN_PASSWORD=admin_password
+
+      # For Windows environments using Docker Desktop, Jenkins communicates with the Docker daemon using the special DNS name 'host.docker.internal' which resolves to the host IP.
+      # Uncomment the next line if you're deploying on Windows.
+      - DOCKER_HOST=tcp://host.docker.internal:2375
+
+      # For Linux environments, if your setup requires specifying the DOCKER_HOST, you'll need to adjust it according to your configuration.
+      # Uncomment and modify the next line if necessary when deploying on Linux.
+      #- DOCKER_HOST=tcp://<your-linux-docker-host>:2375
+
     container_name: jenkins-server

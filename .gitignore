@@ -1,1 +1,4 @@
 src/docker-volumes/jenkins-volume/
+src/docker-volumes/wordpress_data/
+src/docker-volumes/wordpress_db/
+
