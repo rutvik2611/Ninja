@@ -47,30 +47,44 @@ delete_existing_keys() {
 delete_existing_keys
 
 # Generate a new GPG key
-echo "Generating a new GPG key..."
-gpg --full-generate-key
+echo "Generating a new GPG key with default size 4096 and no expiration..."
+gpg --full-generate-key --default-key 4096 --default-new-key-algo rsa4096 --gen-key --pinentry-mode loopback
 
 # Extract the GPG key ID
 echo "Extracting the GPG key ID..."
 key_id=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | awk -F'/' '{print $2}')
 echo "GPG key ID: $key_id"
 
-# Configure Git to use the GPG key for signing commits
-echo "Configuring Git to use GPG key for commit signing..."
-git config --global user.signingkey "$key_id"
-echo "git config --global user.signingkey $key_id"
+# Ask user if they want to configure Git for commit signing
+read -p "Do you want to configure Git to use GPG key for commit signing? (yes/no): " configure_git
+if [[ "$configure_git" == "yes" ]]; then
+    # Configure Git to use the GPG key for signing commits
+    echo "Configuring Git to use GPG key for commit signing..."
+    git config --global user.signingkey "$key_id"
+    echo "git config --global user.signingkey $key_id"
 
-git config --global commit.gpgsign true
-echo "git config --global commit.gpgsign true"
+    git config --global commit.gpgsign true
+    echo "git config --global commit.gpgsign true"
 
-# Test to validate GPG key works for signing
-echo "Testing GPG key for signing..."
-echo "test message" | gpg --clearsign > /dev/null 2>&1
+    # Test to validate GPG key works for signing
+    echo "Testing GPG key for signing..."
+    echo "test message" | gpg --clearsign > /dev/null 2>&1
 
-if [ $? -eq 0 ]; then
-    echo "GPG key test successful. Signing works as expected."
+    if [ $? -eq 0 ]; then
+        echo "GPG key test successful. Signing works as expected."
+    else
+        echo "GPG key test failed. Please check your GPG setup."
+    fi
+
+    echo "Git has been configured to use the GPG key with ID $key_id for signing commits."
 else
-    echo "GPG key test failed. Please check your GPG setup."
+    echo "Skipping Git configuration for commit signing."
 fi
 
-echo "Git has been configured to use the GPG key with ID $key_id for signing commits."
+# Provide an option to undo settings
+read -p "Do you want to undo all settings and disable GPG signing for Git? (yes/no): " undo_settings
+if [[ "$undo_settings" == "yes" ]]; then
+    git config --global --unset user.signingkey
+    git config --global commit.gpgsign false
+    echo "All Git GPG settings have been reset. GPG signing is no longer required."
+fi
