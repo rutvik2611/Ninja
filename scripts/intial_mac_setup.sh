@@ -31,7 +31,13 @@ echo "Installing Zsh plugins..."
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
-echo "plugins=(git zsh-autosuggestions cp sudo web-search copypath copyfile copybuffer dirhistory history jsontools macos auto-notify you-should-use)" >>~/.zshrc
+# Adding fzf
+brew install fzf
+$(brew --prefix)/opt/fzf/install
+# Adding bat
+brew install bat
+# Update plugins list
+echo "plugins=(git zsh-autosuggestions cp sudo web-search copypath copyfile copybuffer dirhistory history jsontools macos auto-notify you-should-use fzf bat)" >>~/.zshrc
 echo "AUTO_NOTIFY_IGNORE+=(\"docker\")" >>~/.zshrc
 echo "Zsh plugins installation complete."
 
