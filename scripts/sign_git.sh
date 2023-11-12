@@ -86,5 +86,5 @@ read -p "Do you want to undo all settings and disable GPG signing for Git? (yes/
 if [[ "$undo_settings" == "yes" ]]; then
     git config --global --unset user.signingkey
     git config --global commit.gpgsign false
-    echo "All Git GPG settings have been reset. GPG signing is no longer required."
+    echo "All Git GPG settings have been reset. GPG signing is no longer required.."
 fi
