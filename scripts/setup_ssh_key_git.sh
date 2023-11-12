@@ -102,5 +102,5 @@ if [ "$added_key" == "yes" ]; then
     fi  # This 'fi' was missing, which is needed to close the if statement
 else
     echo "Please add the SSH key to GitHub to complete the setup."
-fi  # This closes the outer if statement
+fi  # This closes the outer if statement.
 
