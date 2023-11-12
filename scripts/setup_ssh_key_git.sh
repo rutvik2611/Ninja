@@ -96,4 +96,11 @@ if [ "$added_key" == "yes" ]; then
     if [[ $ssh_output == *"successfully authenticated"* ]]; then
         echo "SSH key successfully authenticated with GitHub."
         echo "Your SSH key should now be set up with GitHub."
+    else
+        echo "Failed to authenticate with GitHub using the SSH key."
+        echo "Please check if the SSH key has been correctly added to your GitHub account."
+    fi  # This 'fi' was missing, which is needed to close the if statement
+else
+    echo "Please add the SSH key to GitHub to complete the setup."
+fi  # This closes the outer if statement
 
