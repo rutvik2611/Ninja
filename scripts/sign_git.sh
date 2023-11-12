@@ -62,7 +62,7 @@ read -p "Enter your email: " email
 read -p "Enter a comment for your key (optional): " comment
 
 # Generate a new GPG key
-echo "Generating a new GPG key with default size 4096 and no expiration..."
+echo "Generating a newf GPG key with default size 4096 and no expiration..."
 gpg --batch --gen-key <<EOF
     Key-Type: RSA
     Key-Length: 4096
