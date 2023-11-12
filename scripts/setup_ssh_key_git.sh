@@ -98,5 +98,5 @@ if [ "$added_key" == "yes" ]; then
         echo "Please check if the SSH key has been correctly added to your GitHub account."
     fi
 else
-    echo "Please add the SSH key to GitHub to complete the setup."
+    echo ".Please add the SSH key to GitHub to complete the setup."
 fi
