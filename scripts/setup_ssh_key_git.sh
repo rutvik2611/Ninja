@@ -34,6 +34,9 @@ if [ -d "$SSH_DIR" ]; then
             if [ -n "${existing_keys[$key_number]}" ]; then
                 echo "You chose to use ${existing_keys[$key_number]}"
                 key_path="${existing_keys[$key_number]}"
+                private_key_path="${key_path%.*}"
+                ssh-add --apple-use-keychain "$private_key_path"
+                echo "SSH key added to the SSH agent and macOS Keychain."
             else
                 echo "Invalid selection. Exiting script."
                 exit 1
@@ -58,6 +61,9 @@ if [ -z "$key_path" ]; then
         ssh-keygen -t rsa -b 4096 -C "$email" -f "$SSH_DIR/$key_name"
         echo "SSH key generated."
         key_path="$SSH_DIR/${key_name}.pub"
+        private_key_path="$SSH_DIR/$key_name"
+        ssh-add --apple-use-keychain "$private_key_path"
+        echo "SSH key added to the SSH agent and macOS Keychain."
     else
         echo "No SSH key selected or generated. Exiting script."
         exit 1
@@ -87,16 +93,10 @@ read -p "Have you added the SSH key to your GitHub account? (yes/no): " added_ke
 if [ "$added_key" == "yes" ]; then
     echo "Attempting to verify the SSH key with GitHub..."
     ssh_output=$(ssh -T git@github.com 2>&1)
-    echo "$(ssh -T git@github.com 2>&1)"
-    echo "Output of SSH command: $ssh_output"
-
     if [[ $ssh_output == *"successfully authenticated"* ]]; then
         echo "SSH key successfully authenticated with GitHub."
         echo "Your SSH key should now be set up with GitHub."
     else
         echo "Failed to authenticate with GitHub using the SSH key."
         echo "Please check if the SSH key has been correctly added to your GitHub account."
-    fi
-else
-    echo ".Please add the SSH key to GitHub to complete the setup."
-fi
+
