@@ -110,5 +110,5 @@ if [[ "$configure_ssh" == "yes" ]]; then
     git config --global url."git@github.com:".insteadOf "https://github.com/"
     echo "Git configured to use SSH for GitHub URLs."
 else
-    echo "Skipping default behavior configuration for GitHub URLs."
+    echo "Skipping default behavior configuration for GitHub URLs.."
 fi
