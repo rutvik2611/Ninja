@@ -13,7 +13,7 @@ validate_email() {
 SSH_DIR="$HOME/.ssh"
 
 # Check for existing SSH keys
-echo "Checking for existing SSH keys..."
+echo "Checking for existing SSH keys...."
 existing_keys=()
 if [ -d "$SSH_DIR" ]; then
     for keyfile in "$SSH_DIR"/*.pub; do
