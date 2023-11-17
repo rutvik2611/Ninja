@@ -68,7 +68,7 @@ if [ -z "$key_path" ]; then
 fi
 
 # Set up Git to use GPG key for signing commits
-echo "Configuring Git to use GPG key for signing commits..."
+echo "Configuring Git to use GPG key for signing commits...."
 gpg_key_id=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | awk -F '/' '{print $2}')
 git config --global user.signingkey "$gpg_key_id"
 git config --global commit.gpgsign true
