@@ -5,7 +5,7 @@ command_exists() {
     type "$1" &> /dev/null
 }
 
-echo "Checking for GPG installation..."
+echo "Checking for GPG installation...."
 
 # Check if GPG is installed
 if command_exists gpg; then
