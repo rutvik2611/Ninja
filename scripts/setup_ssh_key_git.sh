@@ -99,8 +99,16 @@ if [ "$added_key" == "yes" ]; then
     else
         echo "Failed to authenticate with GitHub using the SSH key."
         echo "Please check if the SSH key has been correctly added to your GitHub account."
-    fi  # This 'fi' was missing, which is needed to close the if statement
+    fi
 else
     echo "Please add the SSH key to GitHub to complete the setup."
-fi  # This closes the outer if statement.
+fi
 
+# Ask user if they want to set default behavior for GitHub URLs to use SSH
+read -p "Do you want to set default behavior for Git to use SSH for GitHub URLs? (yes/no): " configure_ssh
+if [[ "$configure_ssh" == "yes" ]]; then
+    git config --global url."git@github.com:".insteadOf "https://github.com/"
+    echo "Git configured to use SSH for GitHub URLs."
+else
+    echo "Skipping default behavior configuration for GitHub URLs."
+fi
