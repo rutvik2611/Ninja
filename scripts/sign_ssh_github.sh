@@ -35,21 +35,6 @@ if [ -d "$SSH_DIR" ]; then
         for i in "${!existing_keys[@]}"; do
             echo "[$i] ${existing_keys[$i]}"
         done
-
-        read -p "Do you want to use one of these keys? (yes/no): " use_existing_key
-        if [ "$use_existing_key" == "yes" ]; then
-            read -p "Enter the number of the key you want to use: " key_number
-            if [ -n "${existing_keys[$key_number]}" ]; then
-                echo "You chose to use ${existing_keys[$key_number]}"
-                key_path="${existing_keys[$key_number]}"
-                private_key_path="${key_path%.*}"
-                ssh-add --apple-use-keychain "$private_key_path"
-                echo "SSH key added to the SSH agent and macOS Keychain."
-            else
-                echo "Invalid selection. Exiting script."
-                exit 1
-            fi
-        fi
     fi
 fi
 
@@ -75,51 +60,47 @@ if [ -z "$key_path" ]; then
         private_key_path="$SSH_DIR/$key_name"
         ssh-add --apple-use-keychain "$private_key_path"
         echo "SSH key added to the SSH agent and macOS Keychain."
+
     else
         echo "No SSH key selected or generated. Exiting script."
         exit 1
     fi
 fi
 
+# Set up Git to use GPG key for signing commits
+echo "Configuring Git to use GPG key for signing commits..."
+gpg_key_id=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | awk -F '/' '{print $2}')
+git config --global user.signingkey "$gpg_key_id"
+git config --global commit.gpgsign true
+echo "Git configured to use GPG key for signing commits."
+
 # Copy the SSH key to clipboard
 if [ -f "$key_path" ]; then
     echo "Copying the SSH public key to the clipboard..."
-    pbcopy < "$key_path"
+    cat "$key_path" | pbcopy
     echo "SSH public key has been copied to the clipboard."
+
+    # Instructions to add SSH key to GitHub
+    echo "Please manually add the SSH key to your GitHub account:"
+    echo "1. Go to https://github.com/settings/keys"
+    echo "2. Click on 'New SSH key' or 'Add SSH key'"
+    echo "3. In the 'Title' field, add a descriptive label for the new key"
+    echo "4. Paste your key into the 'Key' field"
+    echo "5. Click 'Add SSH key'"
+    echo "If prompted, confirm your GitHub password"
 else
     echo "No SSH key available to copy to clipboard."
 fi
 
-# Instructions for adding SSH key to GitHub
-echo "Please manually add the SSH key to your GitHub account:"
-echo "1. Go to https://github.com/settings/keys"
-echo "2. Click on 'New SSH key' or 'Add SSH key'"
-echo "3. In the 'Title' field, add a descriptive label for the new key"
-echo "4. Paste your key into the 'Key' field"
-echo "5. Click 'Add SSH key'"
-echo "If prompted, confirm your GitHub password"
-
-# Confirmation and Validation step
-read -p "Have you added the SSH key to your GitHub account? (yes/no): " added_key
-if [ "$added_key" == "yes" ]; then
-    echo "Attempting to verify the SSH key with GitHub..."
-    ssh_output=$(ssh -T git@github.com 2>&1)
-    if [[ $ssh_output == *"successfully authenticated"* ]]; then
-        echo "SSH key successfully authenticated with GitHub."
-        echo "Your SSH key should now be set up with GitHub."
+# Prompt user to configure Git with GPG key
+echo "Please ensure your Git email matches the GPG key's email:"
+git_email=$(git config --get user.email)
+if [ "$git_email" != "$email" ]; then
+    read -p "Your Git email ($git_email) does not match the GPG key's email ($email). Do you want to update your Git email to match? (yes/no): " update_email
+    if [ "$update_email" == "yes" ]; then
+        git config --global user.email "$email"
+        echo "Git email updated to match the GPG key's email."
     else
-        echo "Failed to authenticate with GitHub using the SSH key."
-        echo "Please check if the SSH key has been correctly added to your GitHub account."
+        echo "Please manually update your Git email to match the GPG key's email ($email)."
     fi
-else
-    echo "Please add the SSH key to GitHub to complete the setup."
-fi
-
-# Ask user if they want to set default behavior for GitHub URLs to use SSH
-read -p "Do you want to set default behavior for Git to use SSH for GitHub URLs? (yes/no): " configure_ssh
-if [[ "$configure_ssh" == "yes" ]]; then
-    git config --global url."git@github.com:".insteadOf "https://github.com/"
-    echo "Git configured to use SSH for GitHub URLs."
-else
-    echo "Skipping default behavior configuration for GitHub URLs."
 fi
