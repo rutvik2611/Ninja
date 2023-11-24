@@ -1,8 +1,6 @@
 import os
-import subprocess
-import yaml
 
-from src.helper.helper import deploy_service, build_and_deploy_jenkins
+from src.old.helper.helper import deploy_service, build_and_deploy_jenkins
 
 
 def print_file_structure(root_directory, indent=""):
