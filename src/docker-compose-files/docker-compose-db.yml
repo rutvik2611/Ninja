@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: example
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+    postgres_data:
+
+networks:
+    default:
+        external: true
+        name: my_network
