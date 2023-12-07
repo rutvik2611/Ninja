@@ -5,9 +5,25 @@ services:
         image: postgres
         restart: always
         environment:
-            POSTGRES_PASSWORD: example
+            POSTGRES_USER: yourusername
+            POSTGRES_PASSWORD: yourpassword
         volumes:
             - postgres_data:/var/lib/postgresql/data/
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.db.rule=Host(`db.127.0.0.1.nip.io`)"
+            - "traefik.http.services.db.loadbalancer.server.port=5432"
+
+    pgadmin:
+        image: dpage/pgadmin4
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: user@example.com
+            PGADMIN_DEFAULT_PASSWORD: secret
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.127.0.0.1.nip.io`)"
+            - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
 
 volumes:
     postgres_data:
