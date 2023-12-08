@@ -7,15 +7,15 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - '5432:5432'
+    # ports:
+    #   - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.db.rule=Host(`db.127.0.0.1.nip.io`)"
+      - "traefik.http.routers.db.rule=Host(`db.${DOMAIN}`)"
       - "traefik.http.services.db.loadbalancer.server.port=5432"
 
   pgadmin:
