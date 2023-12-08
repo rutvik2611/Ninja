@@ -2,5 +2,5 @@ src/docker-volumes/jenkins-volume/
 src/docker-volumes/wordpress_data/
 src/docker-volumes/wordpress_db/
 src/docker-compose-files/master/traefik/acme.json
-src/docker-compose-files/master/traefik/.env
-src/docker-compose-files/master/traefik/.env
+# src/docker-compose-files/master/traefik/.env
+
