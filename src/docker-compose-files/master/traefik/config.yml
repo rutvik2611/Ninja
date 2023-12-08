@@ -1,0 +1,22 @@
+http:
+  middlewares:
+    redirectScheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+  routers:
+    myrouter:
+      rule: "Host(`127.0.0.1.nip.io`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirectScheme
+      service: myservice
+      tls:
+        certresolver: letsencrypt
+  services:
+    myservice:
+      loadBalancer:
+        servers:
+          - url: "http://server1.example.com"
+          - url: "http://server2.example.com"
