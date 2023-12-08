@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.127.0.0.1.nip.io`)"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+networks:
+  default:
+    external:
+      name: my_network
