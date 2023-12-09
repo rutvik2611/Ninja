@@ -9,6 +9,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN}`)"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.prometheus.entrypoints=web,websecure"
+      - "traefik.http.routers.prometheus.middlewares=redirectScheme@file"
+      - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
+      
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
