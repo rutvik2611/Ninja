@@ -19,6 +19,13 @@ services:
       - ./master/traefik/config.yml:/config.yml
       - ./master/traefik/traefik.yml:/traefik.yml
       - ./master/traefik:/etc/traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.traefik.entrypoints=web,websecure"
+      - "traefik.http.routers.traefik.middlewares=redirectScheme@file"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"  
     networks:
       - default
 
