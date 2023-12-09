@@ -14,8 +14,18 @@ http:
       service: myservice
       tls:
         certresolver: letsencrypt
+        domains:
+        - main: 127.0.0.1.nip.io
+          sans:
+          - "*.127.0.0.1.nip.io"
   services:   
     myservice:
       loadBalancer:
         servers:
           - url: "http://localhost:8080" # Replace with your service URL
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/traefik/self-signed-certificates/cert.pem
+        keyFile: /etc/traefik/self-signed-certificates/key.pem

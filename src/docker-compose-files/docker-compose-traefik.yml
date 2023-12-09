@@ -18,6 +18,7 @@ services:
       - ./master/traefik/acme.json:/acme.json
       - ./master/traefik/config.yml:/config.yml
       - ./master/traefik/traefik.yml:/traefik.yml
+      - ./master/traefik:/etc/traefik
     networks:
       - default
 

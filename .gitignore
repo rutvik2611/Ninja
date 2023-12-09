@@ -5,3 +5,5 @@ src/docker-compose-files/master/traefik/acme.json
 src/docker-compose-files/.env
 src/docker-compose-files/master/traefik/.env
 
+/src/docker-compose-files/master/traefik/self-signed-certificates/key.pem
+/src/docker-compose-files/master/traefik/self-signed-certificates/cert.pem

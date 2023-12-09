@@ -22,3 +22,7 @@ certificatesResolvers:
       httpChallenge:
         # used during the challenge
         entryPoint: web
+#   local:
+#     file:
+#       filename: /etc/traefik/self-signed-certificates/certificates.toml
+#       watch: true
