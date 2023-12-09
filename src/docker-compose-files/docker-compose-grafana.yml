@@ -13,13 +13,10 @@ services:
       - "traefik.http.routers.grafana.middlewares=redirectScheme@file"
       - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - ./master/grafana:/var/lib/grafana
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: secret
-
-volumes:
-  grafana-storage:
 
 networks:
   default:

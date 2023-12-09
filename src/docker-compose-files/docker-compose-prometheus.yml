@@ -14,7 +14,7 @@ services:
       - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
       
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - .prometheus/:/etc/prometheus/
 
 networks:
   default:
