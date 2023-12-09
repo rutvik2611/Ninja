@@ -9,9 +9,11 @@ services:
             - portainer_data:/data
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN}`)"
+            - "traefik.http.routers.portainer.rule=Host(`portainer.127.0.0.1.nip.io`)"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-
+            - "traefik.http.routers.portainer.entrypoints=web,websecure"
+            - "traefik.http.routers.portainer.middlewares=redirectScheme@file"
+            - "traefik.http.routers.portainer.tls.certresolver=letsencrypt"
 volumes:
     portainer_data:
 
