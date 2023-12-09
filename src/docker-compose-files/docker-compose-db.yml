@@ -15,7 +15,7 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.db.rule=Host(`db.${DOMAIN}`)"
+      # - "traefik.http.routers.db.rule=Host(`db.${DOMAIN}`)"
       - "traefik.http.services.db.loadbalancer.server.port=5432"
 
   pgadmin:
