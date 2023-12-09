@@ -26,6 +26,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: secret
     networks:
       - default
+    volumes:
+      - ./master/pgadmin:/var/lib/pgadmin
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.127.0.0.1.nip.io`)"
