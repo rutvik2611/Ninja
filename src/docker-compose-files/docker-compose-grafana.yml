@@ -7,12 +7,11 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)"
-      - "traefik.http.routers.grafana.entrypoints=web"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.127.0.0.1.nip.io`)"
+      # - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.entrypoints=web,websecure"
       - "traefik.http.routers.grafana.middlewares=redirectScheme@file"
-      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.${DOMAIN}`)"
-      - "traefik.http.routers.grafana-secure.entrypoints=websecure"
-      - "traefik.http.routers.grafana-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
     volumes:
       - grafana-storage:/var/lib/grafana
     environment:
