@@ -11,3 +11,5 @@ src/docker-compose-files/master/traefik/.env
 /src/docker-compose-files/master/portainer/
 /src/docker-compose-files/master/grafana/
 /src/docker-compose-files/master/postgres/
+/src/docker-compose-files/master/prometheus/data/
+/src/docker-compose-files/master/pgadmin/
