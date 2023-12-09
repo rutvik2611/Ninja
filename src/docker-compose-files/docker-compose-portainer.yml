@@ -9,7 +9,7 @@ services:
             - ./master/portainer:/data
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.portainer.rule=Host(`portainer.127.0.0.1.nip.io`)"
+            - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN}`)"
             - "traefik.http.services.portainer.loadbalancer.server.port=9000"
             - "traefik.http.routers.portainer.entrypoints=web,websecure"
             - "traefik.http.routers.portainer.middlewares=redirectScheme@file"
