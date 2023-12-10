@@ -4,6 +4,10 @@ http:
       redirectScheme:
         scheme: https
         permanent: true
+    auth:
+      basicAuth:
+        users:
+          - "test:$apr1$IJBT.xO5$8DDKT7ZprIchGPGvO5ybh/" # Replace with your own credentials (test:test) htpasswd -nb test test
   routers:
     myrouter:
       rule: "HostRegexp(`{subdomain:[a-z]+}.127.0.0.1.nip.io`)"
@@ -11,6 +15,7 @@ http:
         - web
       middlewares:
         - redirectScheme
+        - auth
       service: myservice
       tls:
         certresolver: letsencrypt
