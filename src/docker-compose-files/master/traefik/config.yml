@@ -10,7 +10,7 @@ http:
           - "test:$apr1$IJBT.xO5$8DDKT7ZprIchGPGvO5ybh/" # Replace with your own credentials (test:test) htpasswd -nb test test
   routers:
     myrouter:
-      rule: "HostRegexp(`{subdomain:[a-z]+}.127.0.0.1.nip.io`)"
+      rule: "HostRegexp(`{subdomain:[a-z]+}.${DOMAIN}`)"
       entryPoints:
         - web
       middlewares:
@@ -20,9 +20,9 @@ http:
       tls:
         certresolver: letsencrypt
         domains:
-        - main: 127.0.0.1.nip.io
+        - main: ${DOMAIN}
           sans:
-          - "*.127.0.0.1.nip.io"
+          - "*.${DOMAIN}"
   services:   
     myservice:
       loadBalancer:
