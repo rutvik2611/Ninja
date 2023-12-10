@@ -19,7 +19,7 @@ services:
       - "traefik.http.services.db.loadbalancer.server.port=5432"
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: user@example.com
