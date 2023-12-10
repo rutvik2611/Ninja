@@ -17,24 +17,6 @@ services:
       - "traefik.enable=true"
       # - "traefik.http.routers.db.rule=Host(`db.${DOMAIN}`)"
       - "traefik.http.services.db.loadbalancer.server.port=5432"
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user@example.com
-      PGADMIN_DEFAULT_PASSWORD: secret
-    networks:
-      - default
-    volumes:
-      - ./master/pgadmin:/var/lib/pgadmin
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.${DOMAIN}`)"
-      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
-      - "traefik.http.routers.pgadmin.entrypoints=web,websecure"
-      - "traefik.http.routers.pgadmin.middlewares=redirectScheme@file"
-      - "traefik.http.routers.pgadmin.tls.certresolver=letsencrypt"
 networks:
   default:
     external: true
