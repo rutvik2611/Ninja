@@ -5,10 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 moviepy = "*"
+selenium = "*"
 
 [packages]
 PyYAML = "*"
 #matplotlib = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.9"
