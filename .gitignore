@@ -19,3 +19,4 @@ src/docker-compose-files/master/traefik/.env
 /import.txt
 /automation/Andriod_App_Rp/
 automation/helper/.env
+/optimus_db/.env
