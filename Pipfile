@@ -11,6 +11,9 @@ selenium = "*"
 PyYAML = "*"
 #matplotlib = "*"
 python-dotenv = "*"
+sqlalchemy = "*"
+sqlalchemy-cockroachdb = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.9"
