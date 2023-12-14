@@ -14,3 +14,4 @@ src/docker-compose-files/master/traefik/.env
 /src/docker-compose-files/master/prometheus/data/
 /src/docker-compose-files/master/pgadmin/
 /src/docker-compose-files/master/jenkins/
+/automation/.env
