@@ -32,10 +32,12 @@ def post_rsa(rsa_value: int):
                 add_secure_rsa(rsa_value)
                 trigger()
                 update_attempt_status(new_status="success")
+                comment ="RSA value added successfully"
             except Exception as e:
                 print(f"An error occurred: {e}")
                 update_attempt_status(new_status="failure",msg=str(e))
-        return {"message": "RSA value added successfully"}
+                comment = "RSA value added successfully, but trigger failed: " + str(e)
+        return {"message": comment}
     except Exception as e:
         return {"error": str(e)}
 
