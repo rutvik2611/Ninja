@@ -6,17 +6,17 @@ services:
     #   dockerfile: Dockerfile
     image: ninja:latest
     volumes:
-      - ./master/ninja/certi/:/xyz/
+      - ./master/ninja/certi/root.crt:/root/.postgresql/root.cr
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: "cockroachdb://rutvik:YqtQgv9L-RDbOEJiDFLA1g@bummed-walrus-13623.5xj.cockroachlabs.cloud:26257/ninja_db?sslmode=verify-full&sslrootcert=/xyz/root.crt"
+      DATABASE_URL: ""
       host: 'bummed-walrus-13623.5xj.cockroachlabs.cloud'
       database_name: 'ninja_db'
       port: '26257'
       user: 'rutvik'
       password: 'YqtQgv9L-RDbOEJiDFLA1g'
-      security: 'sslmode=verify-full'
+      security: 'sslrootcert=/root/.postgresql/root.cr'
       connection: 'cockroachdb'
       others_user: 'others'
       others_password: '5_r1eeRq1Bq0HnZLF3xkqg'
