@@ -1,4 +1,4 @@
-from sqlalchemy import Text,Time,Date,MetaData, Table, Column, PrimaryKeyConstraint, Integer, DateTime, func, Boolean
+from sqlalchemy import String,Text,Time,Date,MetaData, Table, Column, PrimaryKeyConstraint, Integer, DateTime, func, Boolean
 from optimus_db.db_connect import create_sqlalchemy_engine
 
 # Create engine
@@ -12,7 +12,7 @@ secure_rsa = Table(
    Column('id', Integer, primary_key=True, autoincrement=True),
    Column('rsa_value', Integer),
    Column('valid', Boolean, default=True),
-   Column('attempt_status', Boolean, default=False),
+   Column('attempt_status', String(10)),
    Column('date', Date, default=func.current_date()),
    Column('time', Time, default=func.current_time()),
    Column('datetime', DateTime, default=func.now(), onupdate=func.now()),
