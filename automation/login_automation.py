@@ -1,6 +1,6 @@
 import time
 
-from helper.helper import log_function_name
+from automation.helper.helper import log_function_name
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
