@@ -39,5 +39,5 @@ def add_secure_rsa(rsa_value):
             session.close()
 
 if __name__ == "__main__":
-    # insert_secure_rsa_1("83053322")
+    insert_secure_rsa_1("83053322")
     add_secure_rsa("83053322")
