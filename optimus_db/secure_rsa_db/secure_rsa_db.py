@@ -19,4 +19,5 @@ secure_rsa = Table(
 )
 
 # Create all tables in the metadata
-metadata.create_all(engine)
+if __name__ == "__main__":
+   metadata.create_all(engine)
