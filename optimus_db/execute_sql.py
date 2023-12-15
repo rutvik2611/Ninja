@@ -31,7 +31,9 @@ def ask_and_drop_table(table_name):
         print(f"Table '{table_name}' dropped.")
 
 # Example usage:
-# result = list_all_tables()
-# for row in result:
-#     table_name = row[0]
-#     ask_and_drop_table(table_name)
+if __name__ == "__main__":
+    # List all tables
+    result = list_all_tables()
+    for row in result:
+        table_name = row[0]
+        ask_and_drop_table(table_name)
