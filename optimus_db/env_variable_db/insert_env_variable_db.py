@@ -1,16 +1,59 @@
 from sqlalchemy import insert
-from optimus_db.db_connect import create_session_with_engine
+from optimus_db.db_connect import create_session_with_engine, create_sqlalchemy_engine
 from optimus_db.env_variable_db.env_variable_db import env_variables
+from dotenv import load_dotenv
+import os
+
+def load_env_variables():
+    """Load environment variables from a .env file."""
+    env_vars = {}
+
+    # Open .env file
+    with open('../.env') as f:
+        for line in f:
+            if line.strip() and not line.startswith('#'):
+                key, value = line.strip().split('=', 1)
+                env_vars[key] = value.strip("'\"")
+
+    return env_vars
 
 
+print(load_env_variables())
 
-# Create a session
-with create_session_with_engine() as session:
-    # Insert statement
-    stmt = insert(env_variables).values(ninja_key='key1', ninja_value='value1')
+def insert_or_update_env_variables(env_vars):
+    """Insert or update environment variables in the env_variables table."""
 
-    # Execute the statement
-    session.execute(stmt)
+    # Create a session
+    with create_session_with_engine() as session:
+        for ninja_key, ninja_value in env_vars.items():
+            # Insert or update statement
+            stmt = insert(env_variables).values(ninja_key=ninja_key, ninja_value=ninja_value)
 
-    # Commit the transaction
-    session.commit()
+            # Execute the statement
+            session.execute(stmt)
+
+        # Commit the transaction
+        session.commit()
+
+from sqlalchemy import delete
+from optimus_db.db_connect import create_sqlalchemy_engine, create_session_with_engine
+
+def delete_all_env_variables():
+    """Delete all entries in the env_variables table."""
+
+
+    # Create a session
+    with create_session_with_engine() as session:
+        # Delete statement
+        stmt = delete(env_variables)
+
+        # Execute the statement
+        session.execute(stmt)
+
+        # Commit the transaction
+        session.commit()
+
+if __name__ == "__main__":
+    # insert_or_update_env_variables(load_env_variables())
+    # delete_all_env_variables()
+    pass
