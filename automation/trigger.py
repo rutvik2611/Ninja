@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 import os
 
 from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
-from optimus_db.secure_rsa_db.insert_secure_rsa import add_secure_rsa
 from optimus_db.secure_rsa_db.update_status import update_attempt_status
 
 
