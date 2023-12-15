@@ -1,8 +1,11 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from helper.helper import get_page_source
-from login_automation import LoginAutomation
+from automation.helper.helper import get_page_source
+from automation.login_automation import LoginAutomation
 from dotenv import load_dotenv
 import os
 
@@ -59,7 +62,7 @@ def trigger():
 
 if __name__ == "__main__":
     try:
-        add_secure_rsa("33116837")
+        # add_secure_rsa("33116837")
         trigger()
         update_attempt_status_and_html("success")
     except Exception as e:
