@@ -1,8 +1,7 @@
 from sqlalchemy import insert
-from optimus_db.db_connect import create_session_with_engine, create_sqlalchemy_engine
+
 from optimus_db.env_variable_db.env_variable_db import env_variables
-from dotenv import load_dotenv
-import os
+
 
 def load_env_variables():
     """Load environment variables from a .env file."""
@@ -20,6 +19,7 @@ def load_env_variables():
 
 print(load_env_variables())
 
+
 def insert_or_update_env_variables(env_vars):
     """Insert or update environment variables in the env_variables table."""
 
@@ -35,12 +35,13 @@ def insert_or_update_env_variables(env_vars):
         # Commit the transaction
         session.commit()
 
+
 from sqlalchemy import delete
-from optimus_db.db_connect import create_sqlalchemy_engine, create_session_with_engine
+from optimus_db.db_connect import create_session_with_engine
+
 
 def delete_all_env_variables():
     """Delete all entries in the env_variables table."""
-
 
     # Create a session
     with create_session_with_engine() as session:
@@ -52,6 +53,7 @@ def delete_all_env_variables():
 
         # Commit the transaction
         session.commit()
+
 
 if __name__ == "__main__":
     # insert_or_update_env_variables(load_env_variables())
