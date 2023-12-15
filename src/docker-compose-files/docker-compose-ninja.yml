@@ -6,9 +6,16 @@ services:
     #   dockerfile: Dockerfile
     image: ninja:latest
     volumes:
-      - ./master/ninja/certi/root.crt:/root/.postgresql/root.cr
+      - ./master/ninja/certi/root.crt:/root/.postgresql/root.crt
     ports:
       - "8000:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ninja.rule=Host(`ninja.${DOMAIN}`)"
+      - "traefik.http.services.ninja.loadbalancer.server.port=8000"
+      - "traefik.http.routers.ninja.entrypoints=web,websecure"
+      - "traefik.http.routers.ninja.middlewares=redirectScheme@file"
+      - "traefik.http.routers.ninja.tls.certresolver=letsencrypt"
     environment:
       DATABASE_URL: ""
       host: 'bummed-walrus-13623.5xj.cockroachlabs.cloud'
@@ -16,7 +23,12 @@ services:
       port: '26257'
       user: 'rutvik'
       password: 'YqtQgv9L-RDbOEJiDFLA1g'
-      security: 'sslrootcert=/root/.postgresql/root.cr'
+      security: 'sslrootcert=/root/.postgresql/root.crt'
       connection: 'cockroachdb'
       others_user: 'others'
       others_password: '5_r1eeRq1Bq0HnZLF3xkqg'
+    networks:
+      - my_network
+networks:
+  my_network:
+    external: true
