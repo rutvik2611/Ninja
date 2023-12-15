@@ -1,4 +1,11 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from fastapi import FastAPI
+
+
+
 from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
 from optimus_db.secure_rsa_db.insert_secure_rsa import add_secure_rsa
 from optimus_db.secure_rsa_db.update_status import update_attempt_status_and_html
