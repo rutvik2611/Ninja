@@ -20,3 +20,4 @@ src/docker-compose-files/master/traefik/.env
 /automation/Andriod_App_Rp/
 automation/helper/.env
 /optimus_db/.env
+/src/docker-compose-files/master/newrelic/

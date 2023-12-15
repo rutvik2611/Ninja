@@ -6,12 +6,22 @@ from login_automation import LoginAutomation
 from dotenv import load_dotenv
 import os
 
+from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
+
 load_dotenv()
 
 # Load username and password from environment variables
 username = os.getenv('USERNAME')
 password = os.getenv('PASSWORD')
-secure_id = os.getenv('SECURE_ID')
+secure_id = None
+while secure_id is None:
+    try:
+        secure_id = fetch_valid_rsa_value()
+        print(secure_id)
+    except ValueError as e:
+        print(f"An error occurred while fetching the RSA value: {e}")
+        print("Retrying...")
+
 # Create a new instance of the Chrome driver and keep it open after the script finishes
 options = Options()
 options.add_experimental_option("detach", True)
