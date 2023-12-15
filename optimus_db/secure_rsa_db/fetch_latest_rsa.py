@@ -12,7 +12,7 @@ def fetch_valid_rsa_value():
             # Fetch the rsa_value of the valid row
             result = session.query(secure_rsa.c.rsa_value).filter_by(valid=True).one()
 
-            return result
+            return result[0]
         except NoResultFound:
             print("Error: No valid RSA value found in the database.")
         except MultipleResultsFound:

@@ -1,5 +1,4 @@
 from sqlalchemy.exc import SQLAlchemyError
-
 from optimus_db.db_connect import create_session_with_engine
 from optimus_db.secure_rsa_db.secure_rsa_db import secure_rsa
 
@@ -40,5 +39,5 @@ def add_secure_rsa(rsa_value):
             session.close()
 
 if __name__ == "__main__":
-    # insert_secure_rsa("12343000")
-    add_secure_rsa("86510496")
+    # insert_secure_rsa_1("83053322")
+    add_secure_rsa("83053322")
