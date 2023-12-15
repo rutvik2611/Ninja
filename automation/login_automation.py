@@ -1,3 +1,5 @@
+import time
+
 from helper.helper import log_function_name
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -45,3 +47,16 @@ class LoginAutomation:
     def click_login_button(self):
         login_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "loginBtn")))
         login_button.click()
+
+        # Wait for the page to load
+        time.sleep(3)
+
+            # Check for the error messages
+        error_messages = [
+            "Your ID, password or SecurID passcode was incorrectly entered. Please re-enter your credentials after your SecurID token has cycled to the next set of digits",
+            "Hello, additional information is required about your account."
+        ]
+
+        for error_message in error_messages:
+            if error_message in self.driver.page_source:
+                raise Exception("Login failed: " + error_message)
