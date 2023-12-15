@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ninja:
+    build: 
+      context: ../
+      dockerfile: Dockerfile
+    image: ninja
+    ports:
+      - "8000:8000"

@@ -23,3 +23,5 @@ automation/helper/.env
 /src/docker-compose-files/master/newrelic/
 /flash_fast_api/html_files/
 .idea/
+/src/docker-compose-files/master/ninja/
+/src/docker-compose-files/master/newrelic/
