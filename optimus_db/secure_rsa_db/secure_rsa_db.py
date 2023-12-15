@@ -14,9 +14,8 @@ secure_rsa = Table(
    Column('valid', Boolean, default=True),
    Column('attempt_status', Boolean, default=False),
    Column('date', Date, default=func.current_date()),
-   Column('time', Time, default=func.current_time()),
-   Column('datetime', DateTime, default=func.now(), onupdate=func.now()),
-   # Column('html_content', Text, default='<html></html>')
+   Column('time', Time, default=func.current_time(), onupdate=func.current_time()),
+   # Column('datetime', DateTime, default=func.now(), onupdate=func.now()),
 )
 
 # Create all tables in the metadata
