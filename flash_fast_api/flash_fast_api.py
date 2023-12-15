@@ -34,7 +34,7 @@ def post_rsa(rsa_value: int):
                 update_attempt_status("success")
             except Exception as e:
                 print(f"An error occurred: {e}")
-                update_attempt_status("failure")
+                update_attempt_status(f"failure:{e}")
         return {"message": "RSA value added successfully"}
     except Exception as e:
         return {"error": str(e)}
