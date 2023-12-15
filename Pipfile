@@ -16,6 +16,7 @@ sqlalchemy-cockroachdb = "*"
 psycopg2-binary = "*"
 fastapi = "*"
 uvicorn = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.9"
