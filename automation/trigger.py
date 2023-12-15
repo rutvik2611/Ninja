@@ -11,7 +11,7 @@ import os
 
 from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
 from optimus_db.secure_rsa_db.insert_secure_rsa import add_secure_rsa
-from optimus_db.secure_rsa_db.update_status import update_attempt_status_and_html
+from optimus_db.secure_rsa_db.update_status import update_attempt_status
 
 
 def load_environment_variables():
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     try:
         # add_secure_rsa("33116837")
         trigger()
-        update_attempt_status_and_html("success")
+        update_attempt_status("success")
     except Exception as e:
         print(f"An error occurred: {e}")
-        update_attempt_status_and_html("failure")
+        update_attempt_status("failure")

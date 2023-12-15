@@ -12,7 +12,7 @@ from automation.trigger import trigger
 
 from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
 from optimus_db.secure_rsa_db.insert_secure_rsa import add_secure_rsa
-from optimus_db.secure_rsa_db.update_status import update_attempt_status_and_html
+from optimus_db.secure_rsa_db.update_status import update_attempt_status
 
 app = FastAPI()
 
@@ -31,10 +31,10 @@ def post_rsa(rsa_value: int):
             try:
                 add_secure_rsa(rsa_value)
                 trigger()
-                update_attempt_status_and_html("success")
+                update_attempt_status("success")
             except Exception as e:
                 print(f"An error occurred: {e}")
-                update_attempt_status_and_html("failure")
+                update_attempt_status("failure")
         return {"message": "RSA value added successfully"}
     except Exception as e:
         return {"error": str(e)}
@@ -42,7 +42,7 @@ def post_rsa(rsa_value: int):
 @app.put("/status/{status}")
 def update_status(status: str):
     try:
-        update_attempt_status_and_html(status)
+        update_attempt_status(status)
         return {"message": "Status updated successfully"}
     except Exception as e:
         return {"error": str(e)}

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from optimus_db.db_connect import create_session_with_engine
 from optimus_db.secure_rsa_db.secure_rsa_db import secure_rsa
 
-def update_attempt_status_and_html(new_status):
+def update_attempt_status(new_status):
     try:
         # Convert HTML to text
         with create_session_with_engine() as session:
@@ -22,4 +22,4 @@ def update_attempt_status_and_html(new_status):
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    update_attempt_status_and_html("failure")
+    update_attempt_status("failure")
