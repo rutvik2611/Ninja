@@ -32,6 +32,9 @@ def fetch_rsa_value():
 
 def create_driver():
     options = Options()
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    options.add_argument("--disable-infobars")
     options.add_experimental_option("detach", True)
     driver = webdriver.Chrome(options=options)
     return driver
