@@ -1,5 +1,4 @@
 from sqlalchemy import update
-from bs4 import BeautifulSoup
 
 from optimus_db.db_connect import create_session_with_engine
 from optimus_db.secure_rsa_db.secure_rsa_db import secure_rsa
