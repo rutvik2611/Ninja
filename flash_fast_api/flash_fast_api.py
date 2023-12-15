@@ -1,8 +1,12 @@
 import sys
 from pathlib import Path
+
+
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fastapi import FastAPI
+from automation.trigger import trigger
 
 
 
@@ -20,10 +24,17 @@ def get_rsa():
     except Exception as e:
         return {"error": str(e)}
 
-@app.post("/rsa/{rsa_value}")
-def post_rsa(rsa_value: str):
+@app.get("/rsa/{rsa_value}")
+def post_rsa(rsa_value: int):
     try:
-        add_secure_rsa(rsa_value)
+        if rsa_value is not None:
+            try:
+                add_secure_rsa(rsa_value)
+                trigger()
+                update_attempt_status_and_html("success")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                update_attempt_status_and_html("failure")
         return {"message": "RSA value added successfully"}
     except Exception as e:
         return {"error": str(e)}
