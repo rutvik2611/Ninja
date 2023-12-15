@@ -8,6 +8,7 @@ import os
 
 from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
 from optimus_db.secure_rsa_db.insert_secure_rsa import add_secure_rsa
+from optimus_db.secure_rsa_db.update_status import update_attempt_status_and_html
 
 
 def load_environment_variables():
@@ -44,15 +45,23 @@ def automate_login(driver, username, password, secure_id):
     get_page_source(driver, 'after_login')
 
 def trigger():
-    username, password = load_environment_variables()
-    secure_id = fetch_rsa_value()
-    driver = create_driver()
-    automate_login(driver, username, password, secure_id)
+    try:
+        username, password = load_environment_variables()
+        secure_id = fetch_rsa_value()
+        driver = create_driver()
+        automate_login(driver, username, password, secure_id)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        get_page_source(driver, 'after_exception')
+        if driver is not None:
+            driver.quit()
+        raise  # re-raise the exception
 
 if __name__ == "__main__":
-    add_secure_rsa("80394487")
-    trigger()
-
-    update_attempt_status_and_html("success")
-
-    update_attempt_status_and_html("failure")
+    try:
+        add_secure_rsa("33116837")
+        trigger()
+        update_attempt_status_and_html("success")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        update_attempt_status_and_html("failure")
