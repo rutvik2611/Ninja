@@ -22,3 +22,5 @@ Ninja is a Python-based application that uses Docker for containerization. The a
 
 ```bash
 ./run.sh
+
+(Ninja) ➜  flash_fast_api (main) uvicorn flash_fast_api:app --reload 

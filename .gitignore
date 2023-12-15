@@ -21,3 +21,4 @@ src/docker-compose-files/master/traefik/.env
 automation/helper/.env
 /optimus_db/.env
 /src/docker-compose-files/master/newrelic/
+/flash_fast_api/html_files/
