@@ -6,12 +6,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class LoginAutomation:
+    # logger = logging.getLogger(__name__)
     def __init__(self, driver):
         # options = Options()
         # options.add_argument("--disable-blink-features=AutomationControlled")  # This will disable the property that Chrome uses to detect automation
         # options.add_argument("start-maximized")  # Start browser maximized
         # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")  # Set user agent to a common browser
         self.driver = driver
+
 
     @log_function_name
     def navigate_to_website(self, url):
@@ -24,6 +26,13 @@ class LoginAutomation:
 
     @log_function_name
     def fill_login_form(self, username, password, secure_id):
+        print(f"Username: {username}")
+        print(f"Password: {password}")
+        print(f"Secure ID: {secure_id}")
+        if username is None or password is None or secure_id is None:
+
+            raise ValueError("username, password, and secure_id must not be None")
+
         username_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "login")))
         password_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "passwd1")))
         secure_id_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "passwd")))
