@@ -29,7 +29,7 @@ class LoginAutomation:
     @log_function_name
     def fill_login_form(self, username, password, secure_id):
         print(f"Username: {username}")
-        print(f"Password: {password}")
+        # print(f"Password: {password}")
         print(f"Secure ID: {secure_id}")
         if username is None or password is None or secure_id is None:
 
