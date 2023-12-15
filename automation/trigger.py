@@ -7,41 +7,52 @@ from dotenv import load_dotenv
 import os
 
 from optimus_db.secure_rsa_db.fetch_latest_rsa import fetch_valid_rsa_value
+from optimus_db.secure_rsa_db.insert_secure_rsa import add_secure_rsa
 
-load_dotenv()
 
-# Load username and password from environment variables
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
-secure_id = None
-while secure_id is None:
-    try:
-        secure_id = fetch_valid_rsa_value()
-        print(secure_id)
-    except ValueError as e:
-        print(f"An error occurred while fetching the RSA value: {e}")
-        print("Retrying...")
+def load_environment_variables():
+    load_dotenv()
+    username = os.getenv('USERNAME')
+    password = os.getenv('PASSWORD')
+    return username, password
 
-# Create a new instance of the Chrome driver and keep it open after the script finishes
-options = Options()
-options.add_experimental_option("detach", True)
-driver = webdriver.Chrome(options=options)
+def fetch_rsa_value():
+    secure_id = None
+    while secure_id is None:
+        try:
+            secure_id = fetch_valid_rsa_value()
+            print(secure_id)
+        except ValueError as e:
+            print(f"An error occurred while fetching the RSA value: {e}")
+            print("Retrying...")
+    return secure_id
 
-# Create an instance of the LoginAutomation class
-login_automation = LoginAutomation(driver)
+def create_driver():
+    options = Options()
+    options.add_experimental_option("detach", True)
+    driver = webdriver.Chrome(options=options)
+    return driver
 
-# Save the HTML source of the current page to a file
-# get_page_source(driver, 'homepage')
+def automate_login(driver, username, password, secure_id):
+    login_automation = LoginAutomation(driver)
+    login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
+    login_automation.click_login_page_button("warnButton")
+    get_page_source(driver, 'after_click')
+    login_automation.fill_login_form(username, password, secure_id)
 
-# Use the methods of the LoginAutomation class to automate the login process
-login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
-login_automation.click_login_page_button("warnButton")
-# Save the HTML source of the redirected page to a file
-get_page_source(driver, 'after_click')
-login_automation.fill_login_form(username, password, secure_id)
+    login_automation.click_login_button()
+    get_page_source(driver, 'after_login')
 
-# Click the login button
-login_automation.click_login_button()
+def trigger():
+    username, password = load_environment_variables()
+    secure_id = fetch_rsa_value()
+    driver = create_driver()
+    automate_login(driver, username, password, secure_id)
 
-# Save the HTML source of the page after login to a file
-get_page_source(driver, 'after_login')
+if __name__ == "__main__":
+    add_secure_rsa("80394487")
+    trigger()
+
+    update_attempt_status_and_html("success")
+
+    update_attempt_status_and_html("failure")
