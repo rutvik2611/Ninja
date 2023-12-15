@@ -9,7 +9,24 @@ load_dotenv()
 
 def create_sqlalchemy_engine():
     """Create a new SQLAlchemy engine."""
-    db_url = os.getenv("DATABASE_URL").replace("postgresql://", "cockroachdb://")
+
+    # Load environment variables
+    host = os.getenv("host")
+    database_name = os.getenv("database_name")
+    port = os.getenv("port")
+    user = os.getenv("user")
+    password = os.getenv("password")
+    security = os.getenv("security")
+    connection = os.getenv("connection")
+
+
+    # Construct the connection string
+    db_url = f"{connection}://{user}:{password}@{host}:{port}/{database_name}?{security}"
+
+    if os.getenv("DATABASE_URL") != "":
+        db_url = os.getenv("DATABASE_URL")
+
+    db_url = db_url+"&sslrootcert=system"
     engine = create_engine(db_url, echo=True)
     return engine
 
@@ -35,3 +52,14 @@ def create_session_with_engine():
     Session = sessionmaker(bind=engine)
     session = Session()
     yield session
+
+if __name__ == "__main__":
+    # Create engine
+    engine = create_sqlalchemy_engine()
+
+    # Use the session in a context manager
+    with create_db_session(engine) as session:
+        result = session.execute(text("SELECT now()"))
+        for row in result:
+            print(row)
+        print(f"Congratulations, you have connected to the database! @ {engine}")
