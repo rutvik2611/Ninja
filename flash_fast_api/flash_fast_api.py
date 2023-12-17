@@ -1,4 +1,5 @@
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 
@@ -29,12 +30,15 @@ def post_rsa(rsa_value: int):
     try:
         if rsa_value is not None:
             try:
-                add_secure_rsa(rsa_value)
-                trigger()
+                with ThreadPoolExecutor() as executor:
+                    executor.submit(add_secure_rsa, rsa_value)
+                    executor.submit(trigger, secure_id=rsa_value)
+                # add_secure_rsa(rsa_value)
+                # trigger(secure_id=rsa_value)
                 update_attempt_status(new_status="success")
                 comment ="RSA value added successfully"
             except Exception as e:
-                print(f"An error occurred: {e}")
+                print(f"An error occurred in post_rsa: {e}")
                 update_attempt_status(new_status="failure",msg=str(e))
                 comment = "RSA value added successfully, but trigger failed: " + str(e)
         return {"message": comment}
