@@ -1,6 +1,12 @@
 import sys
 from pathlib import Path
+
+
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from automation.apple_automation.apple_dock import remove_chrome_from_dock
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -65,7 +71,10 @@ def trigger(secure_id=None):
         print(f"An error occurred in trigger:")
         get_page_source(driver, 'after_exception')
         if driver is not None:
+            driver.close()
             driver.quit()
+            print("Driver closed and attempt to remove chrome from dock")
+            remove_chrome_from_dock()
         raise Exception("trigger Error -> " + str(e))# re-raise the exception
 
 if __name__ == "__main__":
