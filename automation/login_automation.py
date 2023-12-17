@@ -49,7 +49,7 @@ class LoginAutomation:
         login_button.click()
 
         # Wait for the page to load
-        time.sleep(3)
+        time.sleep(2)
 
             # Check for the error messages
         error_messages = [
