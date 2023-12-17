@@ -46,14 +46,11 @@ class LoginAutomation:
         # secure_id_field.send_keys(secure_id)
 
         username_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "login")))
-
-       # Fill the username field
+        # Fill the username field
         username_field.send_keys(username)
-
         # Ensure the cursor is at the end of the input field
         username_field.send_keys(Keys.END)
         time.sleep(0.5)
-
         # Press Tab to go to the password field and fill it
         username_field.send_keys(Keys.TAB)
         # time.sleep(3)
