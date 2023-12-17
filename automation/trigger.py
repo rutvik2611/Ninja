@@ -68,13 +68,11 @@ def trigger(secure_id=None):
         driver = create_driver()
         automate_login(driver, username, password, secure_id)
     except Exception as e:
-        print(f"An error occurred in trigger:")
+        print(f"An error occurred in trigger")
         get_page_source(driver, 'after_exception')
         if driver is not None:
             driver.close()
             driver.quit()
-            print("Driver closed and attempt to remove chrome from dock")
-            remove_chrome_from_dock()
         raise Exception("trigger Error -> " + str(e))# re-raise the exception
 
 if __name__ == "__main__":
