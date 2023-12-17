@@ -33,7 +33,7 @@ def add_secure_rsa(rsa_value):
         except Exception as e:
             # Roll back the transaction
             session.rollback()
-            print(f"An error occurred: {e}")
+            print(f"An error occurred create_db_session: {e}")
         finally:
             # Close the session
             session.close()

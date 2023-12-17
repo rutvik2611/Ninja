@@ -51,8 +51,8 @@ def automate_login(driver, username, password, secure_id):
         login_automation.click_login_button()
         get_page_source(driver, 'after_login')
     except Exception as e:
-        print(f"An error occurred in automated_login: {e}")
-        raise Exception("automated_login Error: " + e) # re-raise the exception
+        print("An error occurred in automated_login")
+        raise Exception("automated_login Error -> " + str(e)) # re-raise the exception
 
 def trigger(secure_id=None):
     try:
@@ -63,10 +63,10 @@ def trigger(secure_id=None):
         automate_login(driver, username, password, secure_id)
     except Exception as e:
         print(f"An error occurred in trigger:")
-        # get_page_source(driver, 'after_exception')
+        get_page_source(driver, 'after_exception')
         if driver is not None:
             driver.quit()
-        raise  # re-raise the exception
+        raise Exception("trigger Error -> " + str(e))# re-raise the exception
 
 if __name__ == "__main__":
     try:

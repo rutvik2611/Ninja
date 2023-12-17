@@ -27,7 +27,7 @@ def create_sqlalchemy_engine():
         db_url = os.getenv("DATABASE_URL")
 
     db_url = db_url+"&sslrootcert=system"
-    engine = create_engine(db_url, echo=False)
+    engine = create_engine(db_url, echo=True)
     return engine
 
 # Create the engine at the module level

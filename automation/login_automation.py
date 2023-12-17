@@ -59,4 +59,5 @@ class LoginAutomation:
 
         for error_message in error_messages:
             if error_message in self.driver.page_source:
+                print("Login failed: " + error_message)
                 raise Exception("Login failed: " + error_message)
