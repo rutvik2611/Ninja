@@ -28,6 +28,7 @@ def fetch_rsa_value():
         except ValueError as e:
             print(f"An error occurred while fetching the RSA value: {e}")
             print("Retrying...")
+            break
     return secure_id
 
 def create_driver():
@@ -40,23 +41,28 @@ def create_driver():
     return driver
 
 def automate_login(driver, username, password, secure_id):
-    login_automation = LoginAutomation(driver)
-    login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
-    login_automation.click_login_page_button("warnButton")
-    get_page_source(driver, 'after_click')
-    login_automation.fill_login_form(username, password, secure_id)
+    try:
+        login_automation = LoginAutomation(driver)
+        login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
+        login_automation.click_login_page_button("warnButton")
+        get_page_source(driver, 'after_click')
+        login_automation.fill_login_form(username, password, secure_id)
 
-    login_automation.click_login_button()
-    get_page_source(driver, 'after_login')
+        login_automation.click_login_button()
+        get_page_source(driver, 'after_login')
+    except Exception as e:
+        print(f"An error occurred in automated_login: {e}")
+        raise Exception("automated_login Error: " + e) # re-raise the exception
 
-def trigger():
+def trigger(secure_id=None):
     try:
         username, password = load_environment_variables()
-        secure_id = fetch_rsa_value()
+        if secure_id is None:
+            secure_id = fetch_rsa_value()
         driver = create_driver()
         automate_login(driver, username, password, secure_id)
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred in trigger: {e}")
         get_page_source(driver, 'after_exception')
         if driver is not None:
             driver.quit()
