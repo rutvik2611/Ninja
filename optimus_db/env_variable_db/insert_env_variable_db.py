@@ -24,7 +24,7 @@ def insert_or_update_env_variables(env_vars):
     """Insert or update environment variables in the env_variables table."""
 
     # Create a session
-    with create_session_with_engine() as session:
+    with create_db_session() as session:
         for ninja_key, ninja_value in env_vars.items():
             # Insert or update statement
             stmt = insert(env_variables).values(ninja_key=ninja_key, ninja_value=ninja_value)
@@ -37,14 +37,14 @@ def insert_or_update_env_variables(env_vars):
 
 
 from sqlalchemy import delete
-from optimus_db.db_connect import create_session_with_engine
+from optimus_db.db_connect import create_db_session
 
 
 def delete_all_env_variables():
     """Delete all entries in the env_variables table."""
 
     # Create a session
-    with create_session_with_engine() as session:
+    with create_db_session() as session:
         # Delete statement
         stmt = delete(env_variables)
 

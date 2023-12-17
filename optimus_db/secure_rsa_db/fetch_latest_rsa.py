@@ -1,13 +1,13 @@
 from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 
-from optimus_db.db_connect import create_session_with_engine
+from optimus_db.db_connect import create_db_session
 from optimus_db.secure_rsa_db.secure_rsa_db import secure_rsa
 
 
 def fetch_valid_rsa_value():
     """Fetch the rsa_value of the row where valid is True."""
     # Create a session
-    with create_session_with_engine() as session:
+    with create_db_session() as session:
         try:
             # Fetch the rsa_value of the valid row
             result = session.query(secure_rsa.c.rsa_value).filter_by(valid=True).one()

@@ -1,12 +1,12 @@
 from sqlalchemy import create_engine, text
-from db_connect import create_sqlalchemy_engine, create_session_with_engine
+from db_connect import create_sqlalchemy_engine, create_db_session
 
 def execute_sql(sql_statement):
     # Create engine
     engine = create_sqlalchemy_engine()
 
     # Execute the SQL statement
-    with create_session_with_engine() as session:
+    with create_db_session() as session:
         result = session.execute(text(sql_statement))
         session.commit()  # Commit the transaction
         return result
