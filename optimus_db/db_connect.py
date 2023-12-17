@@ -45,13 +45,13 @@ def create_db_session(engine):
     finally:
         session.close()
 
-@contextmanager
-def create_session_with_engine():
-    """Create a new SQLAlchemy session with its own engine."""
-    engine = create_sqlalchemy_engine()
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    yield session
+# @contextmanager
+# def create_session_with_engine():
+#     """Create a new SQLAlchemy session with its own engine."""
+#     engine = create_sqlalchemy_engine()
+#     Session = sessionmaker(bind=engine)
+#     session = Session()
+#     yield session
 
 if __name__ == "__main__":
     # Create engine
