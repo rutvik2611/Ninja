@@ -62,8 +62,8 @@ def trigger(secure_id=None):
         driver = create_driver()
         automate_login(driver, username, password, secure_id)
     except Exception as e:
-        print(f"An error occurred in trigger: {str(e)}")
-        get_page_source(driver, 'after_exception')
+        print(f"An error occurred in trigger:")
+        # get_page_source(driver, 'after_exception')
         if driver is not None:
             driver.quit()
         raise  # re-raise the exception

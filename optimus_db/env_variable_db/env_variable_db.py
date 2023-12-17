@@ -15,5 +15,6 @@ env_variables = Table(
    PrimaryKeyConstraint('ninja_key', name='ninja_key')
 )
 
-# Create all tables in the metadata
-metadata.create_all(engine)
+if __name__ == "__main__":
+    # Create all tables in the metadata
+    metadata.create_all(engine)

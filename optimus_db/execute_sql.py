@@ -2,8 +2,6 @@ from sqlalchemy import create_engine, text
 from db_connect import create_sqlalchemy_engine, create_db_session
 
 def execute_sql(sql_statement):
-    # Create engine
-    engine = create_sqlalchemy_engine()
 
     # Execute the SQL statement
     with create_db_session() as session:

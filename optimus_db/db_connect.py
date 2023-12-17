@@ -27,11 +27,15 @@ def create_sqlalchemy_engine():
         db_url = os.getenv("DATABASE_URL")
 
     db_url = db_url+"&sslrootcert=system"
-    engine = create_engine(db_url, echo=True)
+    engine = create_engine(db_url, echo=False)
     return engine
 
+# Create the engine at the module level
+engine = create_sqlalchemy_engine()
+print(f"Congratulations, you have connected to the database! @ {engine}")
+
 @contextmanager
-def create_db_session(engine):
+def create_db_session():
     """Provide a transactional scope around a series of operations."""
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -45,17 +49,8 @@ def create_db_session(engine):
     finally:
         session.close()
 
-@contextmanager
-def create_session_with_engine():
-    """Create a new SQLAlchemy session with its own engine."""
-    engine = create_sqlalchemy_engine()
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    yield session
 
 if __name__ == "__main__":
-    # Create engine
-    engine = create_sqlalchemy_engine()
 
     # Use the session in a context manager
     with create_db_session(engine) as session:
