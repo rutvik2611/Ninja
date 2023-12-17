@@ -1,12 +1,12 @@
 from sqlalchemy.exc import SQLAlchemyError
-from optimus_db.db_connect import create_session_with_engine
+from optimus_db.db_connect import create_db_session
 from optimus_db.secure_rsa_db.secure_rsa_db import secure_rsa
 
 
 def insert_secure_rsa_1(rsa_value):
     """Insert a value into the secure_rsa table."""
     # Create a session
-    with create_session_with_engine() as session:
+    with create_db_session() as session:
         try:
             # Insert the value
             session.execute(secure_rsa.insert().values(rsa_value=rsa_value))
@@ -20,7 +20,7 @@ def insert_secure_rsa_1(rsa_value):
 def add_secure_rsa(rsa_value):
     """Add a new secure_rsa row and set the previous valid row to invalid."""
     # Create a session
-    with create_session_with_engine() as session:
+    with create_db_session() as session:
         try:
             # Find the current valid row and set it to invalid
             session.query(secure_rsa).filter_by(valid=True).update({secure_rsa.c.valid: False})
