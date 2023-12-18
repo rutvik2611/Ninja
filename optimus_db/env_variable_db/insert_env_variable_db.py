@@ -54,8 +54,22 @@ def delete_all_env_variables():
         # Commit the transaction
         session.commit()
 
+def insert_key_value(key, value):
+    """Insert or update environment variables in the env_variables table."""
+
+    # Create a session
+    with create_db_session() as session:
+        # Insert or update statement
+        stmt = insert(env_variables).values(ninja_key=key, ninja_value=value)
+
+        # Execute the statement
+        session.execute(stmt)
+
+    # Commit the transaction
+    session.commit()
+
 
 if __name__ == "__main__":
-    # insert_or_update_env_variables(load_env_variables())
+    insert_or_update_env_variables(load_env_variables())
     # delete_all_env_variables()
     pass
