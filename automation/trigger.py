@@ -53,8 +53,11 @@ def automate_login(driver, username, password, secure_id):
         get_page_source(driver, 'after_click')
         login_automation.fill_login_form(username, password, secure_id)
 
-        login_automation.click_login_button()
+        result = login_automation.click_login_button()
         get_page_source(driver, 'after_login')
+
+        if result == "Login successful":
+            login_automation.click_use_client_version(type='web')
     except Exception as e:
         print("An error occurred in automated_login")
         raise Exception("automated_login Error -> " + str(e)) # re-raise the exception
