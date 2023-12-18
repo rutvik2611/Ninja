@@ -30,8 +30,16 @@ def create_sqlalchemy_engine():
     engine = create_engine(db_url, echo=True)
     return engine
 
+def create_sqlalchemy_sqlite_engine():
+    """Create a new SQLAlchemy SQLite engine."""
+    db_path ='/Users/rutvik2611/Github/Ninja/optimus_db/optimus.db'
+    db_url = f'sqlite:///{db_path}'
+    engine = create_engine(db_url, echo=True)
+    return engine
+
 # Create the engine at the module level
-engine = create_sqlalchemy_engine()
+# engine = create_sqlalchemy_engine() # This is the CockraoachDB engine
+engine = create_sqlalchemy_sqlite_engine() # This is the SQLite engine
 print(f"Congratulations, you have connected to the database! @ {engine}")
 
 @contextmanager
@@ -53,8 +61,11 @@ def create_db_session():
 if __name__ == "__main__":
 
     # Use the session in a context manager
-    with create_db_session(engine) as session:
-        result = session.execute(text("SELECT now()"))
+    with create_db_session() as session:
+        # Execute a SQL statement
+        # query = "SELECT now()"
+        query = "SELECT date('now')"
+        result = session.execute(text(query))
         for row in result:
             print(row)
         print(f"Congratulations, you have connected to the database! @ {engine}")

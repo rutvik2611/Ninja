@@ -1,8 +1,6 @@
 from sqlalchemy import MetaData, Table, Column, String, PrimaryKeyConstraint
-from optimus_db.db_connect import create_sqlalchemy_engine
+from optimus_db.db_connect import create_db_session
 
-# Create engine
-engine = create_sqlalchemy_engine()
 
 # Create a MetaData instance
 metadata = MetaData()
@@ -16,5 +14,5 @@ env_variables = Table(
 )
 
 if __name__ == "__main__":
-    # Create all tables in the metadata
-    metadata.create_all(engine)
+    with create_db_session() as session:
+        metadata.create_all(session.get_bind())

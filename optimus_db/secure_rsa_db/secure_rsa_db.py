@@ -1,8 +1,7 @@
 from sqlalchemy import String,Text,Time,Date,MetaData, Table, Column, PrimaryKeyConstraint, Integer, DateTime, func, Boolean
-from optimus_db.db_connect import create_sqlalchemy_engine
+from optimus_db.db_connect import create_db_session
 
-# Create engine
-engine = create_sqlalchemy_engine()
+
 
 # Create a MetaData instance
 metadata = MetaData()
@@ -21,4 +20,6 @@ secure_rsa = Table(
 
 # Create all tables in the metadata
 if __name__ == "__main__":
-   metadata.create_all(engine)
+   # Create all tables in the metadata
+   with create_db_session() as session:
+      metadata.create_all(session.get_bind())
