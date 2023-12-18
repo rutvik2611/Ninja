@@ -5,7 +5,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from automation.apple_automation.apple_dock import remove_chrome_from_dock
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
