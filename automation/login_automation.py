@@ -80,3 +80,26 @@ class LoginAutomation:
             if error_message in self.driver.page_source:
                 print("Login failed: " + error_message)
                 raise Exception("Login failed: " + error_message)
+            
+        # If no error messages were found, return a success status
+        return "Login successful"
+            
+    @log_function_name
+    def click_use_client_version(self,type):
+        type = type.lower()
+        if type == "web":
+            # Wait for the button to be present
+            use_web_version_button = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//a[text()='Use web version']"))
+            )
+
+            # Click the button
+            use_web_version_button.click()
+        elif type == "app":
+            # Find the button by its text
+            button = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//a[text()='Detect Workspace App']")))
+    
+            # Click the button
+            button.click()
+        return True
