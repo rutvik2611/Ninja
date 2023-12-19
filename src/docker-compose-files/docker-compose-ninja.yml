@@ -18,15 +18,15 @@ services:
       - "traefik.http.routers.ninja.tls.certresolver=letsencrypt"
     environment:
       DATABASE_URL: ""
-      host: 'bummed-walrus-13623.5xj.cockroachlabs.cloud'
-      database_name: 'ninja_db'
-      port: '26257'
-      user: 'rutvik'
-      password: 'YqtQgv9L-RDbOEJiDFLA1g'
+      host: ''
+      database_name: ''
+      port: ''
+      user: ''
+      password: ''
       security: 'sslrootcert=/root/.postgresql/root.crt'
       connection: 'cockroachdb'
-      others_user: 'others'
-      others_password: '5_r1eeRq1Bq0HnZLF3xkqg'
+      others_user: ''
+      others_password: ''
     networks:
       - my_network
 networks:
