@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
-def create_sqlalchemy_engine():
+def create_sqlalchemy_postgres_engine():
     """Create a new SQLAlchemy engine."""
 
     # Load environment variables
