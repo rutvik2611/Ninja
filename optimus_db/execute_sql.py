@@ -1,5 +1,5 @@
-from sqlalchemy import create_engine, text, MetaData, Table
-from db_connect import create_sqlalchemy_engine, create_db_session
+from sqlalchemy import text, MetaData, Table
+from db_connect import create_db_session
 
 def execute_sql(sql_statement):
 
