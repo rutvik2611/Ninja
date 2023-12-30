@@ -1,4 +1,5 @@
 import sys
+import time
 from pathlib import Path
 
 
@@ -50,7 +51,6 @@ def automate_login(driver, username, password, secure_id):
         login_automation = LoginAutomation(driver)
         login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
         login_automation.click_login_page_button("warnButton")
-        get_page_source(driver, 'after_click')
         login_automation.fill_login_form(username, password, secure_id)
 
         result = login_automation.click_login_button()
@@ -58,6 +58,8 @@ def automate_login(driver, username, password, secure_id):
 
         if result == "Login successful":
             login_automation.click_use_client_version(type='web')
+            get_page_source(driver, 'after_click')
+                
     except Exception as e:
         print("An error occurred in automated_login")
         raise Exception("automated_login Error -> " + str(e)) # re-raise the exception
