@@ -57,7 +57,7 @@ def automate_login(driver, username, password, secure_id):
         get_page_source(driver, 'after_login')
 
         if result == "Login successful":
-            login_automation.click_use_client_version(type='web')
+            login_automation.click_use_client_version(type='app')
             get_page_source(driver, 'after_click')
                 
     except Exception as e:
