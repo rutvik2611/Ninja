@@ -1,6 +1,8 @@
 import time
 
+from selenium.common import NoAlertPresentException
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.alert import Alert
 
 from automation.helper.helper import log_function_name
 from selenium.webdriver.common.keys import Keys
@@ -99,7 +101,23 @@ class LoginAutomation:
             # Find the button by its text
             button = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, "//a[text()='Detect Workspace App']")))
-    
             # Click the button
             button.click()
+
+            # Wait for the alert to be present
+            # self.app_version_click()
         return True
+
+    # @log_function_name
+    # def app_version_click(self):
+    #     try:
+    #         # Try to switch to the alert
+    #         alert = Alert(self.driver)
+
+    #         # Print the alert text
+    #         print(f"Alert present: {alert.text}")
+
+    #         # Accept the alert
+    #         alert.accept()
+    #     except NoAlertPresentException:
+    #         print("No alert present")
