@@ -27,3 +27,4 @@ automation/helper/.env
 /src/docker-compose-files/master/newrelic/
 /optimus_db/optimus.db
 /.env
+/kai_lambda/outputfile.txt
