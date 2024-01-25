@@ -26,3 +26,4 @@ automation/helper/.env
 /src/docker-compose-files/master/ninja/
 /src/docker-compose-files/master/newrelic/
 /optimus_db/optimus.db
+/.env
