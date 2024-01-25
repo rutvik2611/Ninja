@@ -31,8 +31,7 @@ def post_rsa(rsa_value: int):
         if rsa_value is not None:
             try:
                 with ThreadPoolExecutor() as executor:
-                    # executor.submit(trigger, secure_id=rsa_value)
-                    # executor.submit(add_secure_rsa, rsa_value)
+
                     future1 = executor.submit(trigger, secure_id=rsa_value)
                     future2 = executor.submit(add_secure_rsa, rsa_value)
                     # Get the results of the tasks to raise any exceptions
