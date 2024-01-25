@@ -1,3 +1,6 @@
+import json
+
+
 def lambda_handler(event, context):
     # Extract the 'user' and 'rsa' from the path parameters
     user = event['pathParameters']['user']
@@ -8,5 +11,5 @@ def lambda_handler(event, context):
     # Return a 200 OK response
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!!')
+        'body': json.dumps(f'{user}:{rsa}::Hello from Lambda!!')
     }
