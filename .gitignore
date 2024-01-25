@@ -28,3 +28,4 @@ automation/helper/.env
 /optimus_db/optimus.db
 /.env
 /kai_lambda/outputfile.txt
+/kai_lambda/lambda_package/

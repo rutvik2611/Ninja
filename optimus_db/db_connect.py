@@ -38,8 +38,8 @@ def create_sqlalchemy_sqlite_engine():
     return engine
 
 # Create the engine at the module level
-# engine = create_sqlalchemy_engine() # This is the CockraoachDB engine
-engine = create_sqlalchemy_sqlite_engine() # This is the SQLite engine
+engine = create_sqlalchemy_postgres_engine() # This is the CockraoachDB engine
+# engine = create_sqlalchemy_sqlite_engine() # This is the SQLite engine
 print(f"Congratulations, you have connected to the database! @ {engine}")
 
 @contextmanager
