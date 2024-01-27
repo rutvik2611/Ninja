@@ -27,7 +27,7 @@ r743189_table = Table(
 
 
 def create_sqlalchemy_postgres_engine():
-    # Construct the connection string
+    # Construct the connection string 
     db_url = os.getenv("postgresql_connection")
     logger.debug(f"Connecting to: ")
     return create_engine(db_url, echo=False)
