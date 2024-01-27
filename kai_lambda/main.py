@@ -28,7 +28,7 @@ r743189_table = Table(
 
 def create_sqlalchemy_postgres_engine():
     # Construct the connection string 
-    db_url = os.getenv("postgresql_connection")
+    db_url = "postgresql://nsgpuyes:uookN9JXE_2Exvk0SfvWr-7bw64zEiOr@kashin.db.elephantsql.com/nsgpuyes"
     logger.debug(f"Connecting to: ")
     return create_engine(db_url, echo=False)
 
