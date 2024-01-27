@@ -22,11 +22,11 @@ def create_sqlalchemy_postgres_engine():
 
     # Construct the connection string
     db_url = f"{connection}://{user}:{password}@{host}:{port}/{database_name}?{security}"
-
+    
     if os.getenv("DATABASE_URL") != "":
         db_url = os.getenv("DATABASE_URL")
-
-    db_url = db_url+"&sslrootcert=system"
+    else:
+        db_url = db_url + "&sslrootcert=system"
     engine = create_engine(db_url, echo=True)
     return engine
 
@@ -38,8 +38,8 @@ def create_sqlalchemy_sqlite_engine():
     return engine
 
 # Create the engine at the module level
-engine = create_sqlalchemy_postgres_engine() # This is the CockraoachDB engine
-# engine = create_sqlalchemy_sqlite_engine() # This is the SQLite engine
+# engine = create_sqlalchemy_postgres_engine() # This is the CockraoachDB engine
+engine = create_sqlalchemy_sqlite_engine() # This is the SQLite engine
 print(f"Congratulations, you have connected to the database! @ {engine}")
 
 @contextmanager
