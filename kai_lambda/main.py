@@ -1,58 +1,89 @@
 import json
 
-from sqlalchemy import create_engine,text
-import logging
-from psycopg2 import connect
 
-# from kai_lambda.python.sqlalchemy import text, create_engine
+import logging
+from sqlalchemy import create_engine, MetaData, Table, Column, String, Integer, DateTime, func, update 
+
 
 # Configure the logger
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
-# Set up SQLAlchemy logger to use root logger
-sqlalchemy_logger = logging.getLogger('sqlalchemy.engine')
-sqlalchemy_logger.setLevel(logging.DEBUG)
-sqlalchemy_logger.addHandler(logging.StreamHandler())
+# Configure logging to log to CloudWatch Logs
+# logging.basicConfig()
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
+# Create a MetaData instance
+metadata = MetaData()
+
+# Create a table
+r743189_table = Table(
+   'r743189_table', metadata,
+   Column('user', String, default='r743189'),
+   Column('rsa', Integer),
+   Column('time', DateTime, default=func.now())
+)
 
 
 
 def create_sqlalchemy_postgres_engine():
     # Construct the connection string
-    # db_url = "cockroachdb://others:5_r1eeRq1Bq0HnZLF3xkqg@bummed-walrus-13623.5xj.cockroachlabs.cloud:26257/ninja_db?sslmode=verify-full"
-    db_url = "postgresql://nsgpuyes:uookN9JXE_2Exvk0SfvWr-7bw64zEiOr@kashin.db.elephantsql.com/nsgpuyes"
-    logger.info(f"Connecting to: ")
-    return create_engine(db_url, echo=True)
+    db_url = os.getenv("postgresql_connection")
+    logger.debug(f"Connecting to: ")
+    return create_engine(db_url, echo=False)
+
+engine = create_sqlalchemy_postgres_engine()
+
+
 
 def lambda_handler(event, context):
     # Extract the 'user' and 'rsa' from the path parameters
-    logger.info("Congratulations you in lambda_handler!")
+    logger.debug("Congratulations you in lambda_handler!")
 
-    user = event['pathParameters']['user']
-    rsa = event['pathParameters']['rsa']
+    userx = event['pathParameters']['user']
+    rsax = event['pathParameters']['rsa']
 
     # Extract the query parameters
     # query_parameters = event.get('queryStringParameters', {})
     try:
         # Create the engine
-        logger.info(f"User: {user}, RSA: {rsa}")
-        engine = create_sqlalchemy_postgres_engine()
-        logger.info("Engine created")
+        logger.debug(f"User: {userx}, RSA: {rsax}")
 
+        logger.debug("Engine created")
 
         with engine.connect() as connection:
-            result = connection.execute(text("SELECT * FROM r743189_table"))
+            
 
+            update_statement = update(r743189_table).where(r743189_table.c.user == userx).values(rsa=rsax)
+            result = connection.execute(update_statement)
+
+            # Get the number of rows that were updated
+            # updated_rows = result.rowcount
+            # logger.info(f"Number of rows updated: {updated_rows}")
+
+            # get the first record from the table
+            # select_statement = select(r743189_table.c.user, r743189_table.c.rsa).where(r743189_table.c.user == userx)
+            # result = connection.execute(select_statement)
+            # first_record = result.fetchone()
+            # logger.info(f"Query result: {first_record}")
+            
+
+            connection.commit()
+
+
+
+
+            
         # Log the result
-        logger.info(f"Query result: {result.fetchall()}")
+        # logger.info(f"Query result: {first_record}")
 
         # Return a 200 OK response
         return {
             'statusCode': 200,
-            'body': json.dumps(f'{user}:{rsa}:::Hello from Lambda!!')
+            'body': json.dumps(f'Update your rsa value for {userx}:{rsax}')
         }
     except Exception as e:
-        logger.debug("Error occurred while executing lambda function", exc_info=True)
+        logger.error("Error occurred while executing lambda function")
         return {
             'statusCode': 500,
             'body': json.dumps('An error occurred: {}'.format(e))
@@ -65,7 +96,7 @@ if __name__ == '__main__':
     event = {
         'pathParameters': {
             'user': 'r743189',
-            'rsa': '12344321'
+            'rsa': '12332132'
         }
     }
     print(lambda_handler(event, None))
