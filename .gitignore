@@ -30,6 +30,7 @@ automation/helper/.env
 /kai_lambda/outputfile.txt
 /kai_lambda/lambda_package/
 /kai_endpoint/
+/kai_endpoint/release_endpoint.sh
 .vscode/launch.json
 .DS_Store
 .DS_Store
