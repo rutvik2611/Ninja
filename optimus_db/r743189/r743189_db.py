@@ -72,7 +72,7 @@ def fetch_valid_rsa_postgres():
             if record is None:
                 raise Exception("No RSA value found in the database.")
             else:
-                return record.rsa
+                return record.rsa,record.time
 
 
 if __name__ == "__main__":
