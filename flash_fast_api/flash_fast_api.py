@@ -1,6 +1,7 @@
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from datetime import datetime, timezone
 
 
 
@@ -23,7 +24,9 @@ app = FastAPI()
 def get_rsa():
     try:
         rsa_value = fetch_valid_rsa_value()
-        return {"rsa_value": rsa_value}
+        post_rsa = fetch_valid_rsa_postgres()
+        return {"sql_rsa_value": rsa_value,
+                "postgres_rsa_value": post_rsa[0]}
     except Exception as e:
         return {"error": str(e)}
 
@@ -60,23 +63,38 @@ def update_status(status: str):
 @app.get("/auto")
 def post_rsa2():
     try:
-        rsa_value = fetch_valid_rsa_postgres()
-        if rsa_value is not None:
-            try:
-                with ThreadPoolExecutor() as executor:
+        rsa_value,date_time = fetch_valid_rsa_postgres()
 
+        # Get the current datetime
+        now = datetime.now(timezone.utc)
 
-                    future1 = executor.submit(trigger, secure_id=rsa_value)
-                    future2 = executor.submit(add_secure_rsa, rsa_value)
-                    # Get the results of the tasks to raise any exceptions
-                    future1.result()
-                    future2.result()
-                update_attempt_status(new_status="success")
-                comment ="RSA value added successfully"
-            except Exception as e:
-                print(f"An error occurred in post_rsa: {e}")
-                update_attempt_status(new_status="failure",msg=str(e))
-                comment = "RSA value added successfully, but trigger failed: " + str(e)
-        return {"message": comment}
+        # Calculate the difference in seconds
+        difference = (now - date_time.replace(tzinfo=timezone.utc)).total_seconds()
+
+        # Check if the difference is less than 60 seconds
+        print(f"Difference: {difference}")
+        if difference < 60:
+            print("The datetime is less than 60 seconds old.")
+            if rsa_value is not None:
+                try:
+                    with ThreadPoolExecutor() as executor:
+
+                        future1 = executor.submit(trigger, secure_id=rsa_value)
+                        future2 = executor.submit(add_secure_rsa, rsa_value)
+                        # Get the results of the tasks to raise any exceptions
+                        future1.result()
+                        future2.result()
+                    update_attempt_status(new_status="success")
+                    comment = f"RSA {rsa_value} added successfully, which was {difference} seconds old."
+                except Exception as e:
+                    print(f"An error occurred in post_rsa: {e}")
+                    update_attempt_status(new_status="failure", msg=str(e))
+                    comment = "RSA value added successfully, but trigger failed: " + str(e)
+            return {"message": comment}
+        else:
+            print(f"The datetime is more than 60 seconds old. and date_time: {date_time} and now: {now} so {difference}")
+
+            raise ValueError(f"It's {difference} seconds old so not triggering to log you in automatically.")
+
     except Exception as e:
-        return {f"RSA:{rsa_value} error": str(e)}
+        return {f"RSA: error": str(e)}
