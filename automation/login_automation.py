@@ -39,13 +39,6 @@ class LoginAutomation:
 
             raise ValueError("username, password, and secure_id must not be None")
 
-        # username_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "login")))
-        # password_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "passwd1")))
-        # secure_id_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "passwd")))
-
-        # username_field.send_keys(username)
-        # password_field.send_keys(password)
-        # secure_id_field.send_keys(secure_id)
 
         username_field = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, "login")))
         # Fill the username field
@@ -104,20 +97,4 @@ class LoginAutomation:
             # Click the button
             button.click()
 
-            # Wait for the alert to be present
-            # self.app_version_click()
         return True
-
-    # @log_function_name
-    # def app_version_click(self):
-    #     try:
-    #         # Try to switch to the alert
-    #         alert = Alert(self.driver)
-
-    #         # Print the alert text
-    #         print(f"Alert present: {alert.text}")
-
-    #         # Accept the alert
-    #         alert.accept()
-    #     except NoAlertPresentException:
-    #         print("No alert present")
