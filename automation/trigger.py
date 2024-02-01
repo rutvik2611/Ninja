@@ -54,7 +54,7 @@ def automate_login(driver, username, password, secure_id):
         login_automation.fill_login_form(username, password, secure_id)
 
         result = login_automation.click_login_button()
-        get_page_source(driver, 'after_login')
+        # get_page_source(driver, 'after_login')
 
         if result == "Login successful":
             login_automation.click_use_client_version(type='app')
@@ -74,7 +74,7 @@ def trigger(secure_id=None):
         driver = create_driver()
         automate_login(driver, username, password, secure_id)
     except Exception as e:
-        print(f"An error occurred in trigger")
+        print("An error occurred in trigger")
         get_page_source(driver, 'after_exception')
         if driver is not None:
             driver.close()
