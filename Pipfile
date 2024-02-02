@@ -18,6 +18,7 @@ fastapi = "*"
 uvicorn = "*"
 selenium = "*"
 awscli = "*"
+playwright = "*"
 
 [requires]
 python_version = "3.9"
