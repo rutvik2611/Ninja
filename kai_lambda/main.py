@@ -28,7 +28,7 @@ r743189_table = Table(
 
 def create_sqlalchemy_postgres_engine():
     # Construct the connection string 
-    db_url = "postgresql://nsgpuyes:uookN9JXE_2Exvk0SfvWr-7bw64zEiOr@kashin.db.elephantsql.com/nsgpuyes"
+    db_url = ""
     logger.debug(f"Connecting to: ")
     return create_engine(db_url, echo=False)
 
@@ -54,7 +54,7 @@ def lambda_handler(event, context):
         with engine.connect() as connection:
             
 
-            update_statement = update(r743189_table).where(r743189_table.c.user == userx).values(rsa=rsax)
+            update_statement = update(r743189_table).where(r743189_table.c.user == userx).values(rsa=rsax, time=func.now())
             result = connection.execute(update_statement)
 
             # Get the number of rows that were updated
