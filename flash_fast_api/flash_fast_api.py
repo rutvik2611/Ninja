@@ -89,12 +89,14 @@ def post_rsa2():
                 except Exception as e:
                     print(f"An error occurred in post_rsa: {e}")
                     update_attempt_status(new_status="failure", msg=str(e))
-                    comment = "RSA value added successfully, but trigger failed: " + str(e)
+                    comment = "RSA value added successfully, but trigger failed: " + str(e) + f" for {rsa_value}"
             return {"message": comment}
         else:
-            print(f"The datetime is more than 60 seconds old. and date_time: {date_time} and now: {now} so {difference}")
+            print(f"The datetime is more than 60 seconds old. and date_time: {date_time} and now: {now} so {difference} for {rsa_value}")
 
             raise ValueError(f"It's {difference} seconds old so not triggering to log you in automatically.")
 
     except Exception as e:
-        return {f"RSA: error": str(e)}
+        if rsa_value is not None:
+            return {f"RSA: error for {rsa_value}": str(e)}
+        return {f"Could Not get RSA": str(e)}
