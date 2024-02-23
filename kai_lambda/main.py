@@ -28,7 +28,7 @@ r743189_table = Table(
 
 def create_sqlalchemy_postgres_engine():
     # Construct the connection string 
-    db_url = ""
+    db_url = "postgresql://nsgpuyes:{PASSWORD-HERE}@kashin.db.elephantsql.com/nsgpuyes"
     logger.debug(f"Connecting to: ")
     return create_engine(db_url, echo=False)
 
@@ -47,7 +47,7 @@ def lambda_handler(event, context):
     # query_parameters = event.get('queryStringParameters', {})
     try:
         # Create the engine
-        logger.debug(f"User: {userx}, RSA: {rsax}")
+        logger.info(f"User: {userx}, RSA: {rsax}")
 
         logger.debug("Engine created")
 

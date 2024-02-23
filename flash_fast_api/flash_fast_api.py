@@ -62,6 +62,7 @@ def update_status(status: str):
 
 @app.get("/auto")
 def post_rsa2():
+    rsa_value=0
     try:
         rsa_value,date_time = fetch_valid_rsa_postgres()
 
@@ -97,6 +98,6 @@ def post_rsa2():
             raise ValueError(f"It's {difference} seconds old so not triggering to log you in automatically.")
 
     except Exception as e:
-        if rsa_value is not None:
+        if rsa_value is not 0:
             return {f"RSA: error for {rsa_value}": str(e)}
         return {f"Could Not get RSA": str(e)}
