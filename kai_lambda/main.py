@@ -96,7 +96,7 @@ if __name__ == '__main__':
     event = {
         'pathParameters': {
             'user': 'r743189',
-            'rsa': '12332132'
+            'rsa': '0032132'
         }
     }
     print(lambda_handler(event, None))

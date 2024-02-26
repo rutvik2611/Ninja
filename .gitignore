@@ -38,3 +38,4 @@ automation/helper/.env
 /optimus_db/r743189/.env
 .DS_Store
 /kai_endpoint/
+.idea
