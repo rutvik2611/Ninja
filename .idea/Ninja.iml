@@ -5,4 +5,7 @@
     <orderEntry type="jdk" jdkName="Pipenv (Ninja)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="66ee1f8e-11b6-4a9f-82f0-72275ac90b18" />
+  </component>
 </module>

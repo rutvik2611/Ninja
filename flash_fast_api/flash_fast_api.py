@@ -3,8 +3,6 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from datetime import datetime, timezone
 
-
-
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fastapi import FastAPI
@@ -93,11 +91,11 @@ def post_rsa2():
                     comment = "RSA value added successfully, but trigger failed: " + str(e) + f" for {rsa_value}"
             return {"message": comment}
         else:
-            print(f"The datetime is more than 60 seconds old. and date_time: {date_time} and now: {now} so {difference} for {rsa_value}")
+            print(f"More than 60s old. and date_time: {date_time} and now: {now} so {difference} for {rsa_value}")
 
             raise ValueError(f"It's {difference} seconds old so not triggering to log you in automatically.")
 
     except Exception as e:
-        if rsa_value is not 0:
+        if rsa_value != 0:
             return {f"RSA: error for {rsa_value}": str(e)}
-        return {f"Could Not get RSA": str(e)}
+        return {"Could Not get RSA": str(e)}
