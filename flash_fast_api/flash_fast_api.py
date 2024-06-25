@@ -63,6 +63,13 @@ def post_rsa2():
     rsa_value=0
     try:
         rsa_value,date_time = fetch_valid_rsa_postgres()
+        rsa = rsa_value
+        length = len(str(rsa))
+        if length < 8:
+            append = 8 - length
+
+            rsa = '0' * append + str(rsa)
+
 
         # Get the current datetime
         now = datetime.now(timezone.utc)
@@ -75,6 +82,14 @@ def post_rsa2():
         if difference < 60:
             print("The datetime is less than 60 seconds old.")
             if rsa_value is not None:
+                rsa = rsa_value
+                length = len(str(rsa))
+                if length < 8:
+                    append = 8 - length
+
+                    rsa = str('0' * append + str(rsa))
+                    print(type(rsa))
+                    rsa_value = rsa
                 try:
                     with ThreadPoolExecutor() as executor:
 
