@@ -49,7 +49,8 @@ def create_driver():
 def automate_login(driver, username, password, secure_id):
     try:
         login_automation = LoginAutomation(driver)
-        login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
+        # login_automation.navigate_to_website("https://myworkspace-cdc2-4.jpmchase.com/logon/LogonPoint/tmindex.html")
+        login_automation.navigate_to_website("https://myworkspace-nwc01-4-na.jpmchase.com/logon/LogonPoint/tmindex.html")
         login_automation.click_login_page_button("warnButton")
         login_automation.fill_login_form(username, password, secure_id)
 
@@ -57,7 +58,7 @@ def automate_login(driver, username, password, secure_id):
         # get_page_source(driver, 'after_login')
 
         if result == "Login successful":
-            login_automation.click_use_client_version(type='app')
+            login_automation.click_use_client_version(type='web')
             # get_page_source(driver, 'after_final_click')
 
 
@@ -79,7 +80,7 @@ def trigger(secure_id=None):
         if driver is not None:
             driver.close()
             driver.quit()
-        raise Exception("trigger Error -> " + str(e))# re-raise the exception
+        raise Exception("trigger Error -> " + str(e)) # re-raise the exception
 
 if __name__ == "__main__":
     try:
