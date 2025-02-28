@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  psql-db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    # ports:
+    #   - '5432:5432'
+    volumes:
+      - ./master/postgres:/var/lib/postgresql/data/
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      # - "traefik.http.routers.db.rule=Host(`db.${DOMAIN}`)"
+      - "traefik.http.services.db.loadbalancer.server.port=5432"
+networks:
+  default:
+    external: true
+    name: my_network

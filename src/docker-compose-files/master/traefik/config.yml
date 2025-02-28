@@ -1,0 +1,36 @@
+http:
+  middlewares:
+    redirectScheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    auth:
+      basicAuth:
+        users:
+          - "test:$apr1$IJBT.xO5$8DDKT7ZprIchGPGvO5ybh/" # Replace with your own credentials (test:test) htpasswd -nb test test
+  routers:
+    myrouter:
+      rule: "HostRegexp(`{subdomain:[a-z]+}.${DOMAIN}`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirectScheme
+        - auth
+      service: myservice
+      tls:
+        certresolver: letsencrypt
+        domains:
+        - main: ${DOMAIN}
+          sans:
+          - "*.${DOMAIN}"
+  services:   
+    myservice:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8080" # Replace with your service URL
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/traefik/self-signed-certificates/cert.pem
+        keyFile: /etc/traefik/self-signed-certificates/key.pem

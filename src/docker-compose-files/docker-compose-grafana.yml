@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)"
+      # - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.entrypoints=web,websecure"
+      - "traefik.http.routers.grafana.middlewares=redirectScheme@file"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+    volumes:
+      - ./master/grafana:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: secret
+
+networks:
+  default:
+    external: true
+    name: my_network

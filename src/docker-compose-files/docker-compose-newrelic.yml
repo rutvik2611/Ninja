@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  newrelic-infra:
+    container_name: newrelic-infra
+    image: newrelic/infrastructure:latest
+#    build:
+#      context: .
+#      dockerfile: ./master/newrelic/newrelic-infra.dockerfile
+    cap_add:
+      - SYS_PTRACE
+    pid: host
+    privileged: true
+    volumes:
+      - ./master/newrelic/newrelic-infra.yml:/etc/newrelic-infra.yml
+      - /:/host:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+#      - /etc/os-release:/etc/os-release:ro
+    restart: unless-stopped
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

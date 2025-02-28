@@ -1,0 +1,20 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    # ports:
+    #   - 8081:8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins.rule=Host(`jenkins.${DOMAIN}`)"
+      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+      - "traefik.http.routers.jenkins.entrypoints=web,websecure"
+      - "traefik.http.routers.jenkins.middlewares=redirectScheme@file"
+      - "traefik.http.routers.jenkins.tls.certresolver=letsencrypt"
+    volumes:
+      - ./master/jenkins/jmaster:/var/jenkins_home
+    networks:
+      - my_network
+networks:
+  my_network:
+    external: true

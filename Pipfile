@@ -5,9 +5,20 @@ verify_ssl = true
 
 [dev-packages]
 moviepy = "*"
+selenium = "*"
 
 [packages]
 PyYAML = "*"
+#matplotlib = "*"
+python-dotenv = "*"
+sqlalchemy = "*"
+sqlalchemy-cockroachdb = "*"
+psycopg2-binary = "*"
+fastapi = "*"
+uvicorn = "*"
+selenium = "*"
+awscli = "*"
+playwright = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

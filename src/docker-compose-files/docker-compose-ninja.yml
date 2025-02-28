@@ -1,0 +1,34 @@
+version: '3'
+services:
+  ninja:
+  # build: 
+    #   context: ../
+    #   dockerfile: Dockerfile
+    image: ninja:latest
+    volumes:
+      - ./master/ninja/certi/root.crt:/root/.postgresql/root.crt
+    ports:
+      - "8000:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ninja.rule=Host(`ninja.${DOMAIN}`)"
+      - "traefik.http.services.ninja.loadbalancer.server.port=8000"
+      - "traefik.http.routers.ninja.entrypoints=web,websecure"
+      - "traefik.http.routers.ninja.middlewares=redirectScheme@file"
+      - "traefik.http.routers.ninja.tls.certresolver=letsencrypt"
+    environment:
+      DATABASE_URL: ""
+      host: ''
+      database_name: ''
+      port: ''
+      user: ''
+      password: ''
+      security: 'sslrootcert=/root/.postgresql/root.crt'
+      connection: 'cockroachdb'
+      others_user: ''
+      others_password: ''
+    networks:
+      - my_network
+networks:
+  my_network:
+    external: true
